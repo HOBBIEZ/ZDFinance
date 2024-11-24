@@ -6,29 +6,30 @@ DROP TABLE IF EXISTS Accounts;
 DROP TABLE IF EXISTS Users;
 
 CREATE TABLE Users (
-    UserID INT NOT NULL PRIMARY KEY,
-    Username VARCHAR(32) NOT NULL,
-    Password VARCHAR(32) NOT NULL,
-    Creation_Date TIMESTAMP NOT NULL,
-    First_Name VARCHAR(64) NOT NULL,
-    Last_Name VARCHAR(64) NOT NULL,
-    Date_of_Birth DATE,
-    Gender TINYINT(1) NOT NULL, -- 0 -> male 1 -> female
-    Email VARCHAR(64),
-    Phone_Number VARCHAR(32),
-    Address VARCHAR(64)
+    UserID INT AUTO_INCREMENT PRIMARY KEY, 
+    Username VARCHAR(32) NOT NULL UNIQUE CHECK (Username REGEXP '^[a-zA-Z0-9_]{3,32}$'), 
+    Password VARCHAR(255) NOT NULL, -- Use a larger size for hashed passwords
+    Creation_Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    First_Name VARCHAR(64) NOT NULL CHECK (First_Name REGEXP '^[A-Za-z]+$'), 
+    Last_Name VARCHAR(64) NOT NULL CHECK (Last_Name REGEXP '^[A-Za-z]+$'), 
+    Date_of_Birth DATE NOT NULL, 
+    Gender ENUM('male', 'female') NOT NULL, 
+    Email VARCHAR(64) NOT NULL UNIQUE CHECK (Email REGEXP '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'), 
+    Phone_Number VARCHAR(15) NOT NULL UNIQUE CHECK (Phone_Number REGEXP '^\\+?[0-9]{7,15}$'), 
+    Address VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Accounts (
-    IBAN VARCHAR(32) NOT NULL PRIMARY KEY,
+    IBAN BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     UserID INT NOT NULL,
-    Transfer_Limit INT NOT NULL,
-    Type VARCHAR(32) NOT NULL,
-    Balance REAL,
-    Creation_Date TIMESTAMP NOT NULL,
-    Status VARCHAR(32) NOT NULL,
-    FOREIGN KEY (UserID) REFERENCES USERS(UserID)
+    Transfer_Limit INT UNSIGNED NOT NULL,
+    Balance DECIMAL(15, 2) NOT NULL DEFAULT 0.00,
+    Creation_Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
+    FOREIGN KEY (UserID) REFERENCES USERS(UserID) 
 );
+
+ALTER TABLE Accounts AUTO_INCREMENT = 1000000000000000;
 
 CREATE TABLE External_Transactions (
 	TransactionID INT NOT NULL PRIMARY KEY,
@@ -44,8 +45,8 @@ CREATE TABLE External_Transactions (
 CREATE TABLE Internal_Transactions (
 	TransactionID INT NOT NULL PRIMARY KEY,
     UserID INT NOT NULL,
-    From_IBAN VARCHAR(32) NOT NULL,
-    To_IBAN VARCHAR(32) NOT NULL,
+    From_IBAN BIGINT UNSIGNED NOT NULL,
+    To_IBAN BIGINT UNSIGNED NOT NULL,
     Description VARCHAR(256),
     Amount REAL,
     Timestamp TIMESTAMP NOT NULL,
@@ -59,7 +60,7 @@ CREATE TABLE Cards (
     Card_Number VARCHAR(32) NOT NULL,
     CVV INT NOT NULL,
     UserID INT NOT NULL,
-    IBAN VARCHAR(32) NOT NULL,
+    IBAN BIGINT UNSIGNED NOT NULL,
     PIN INT NOT NULL,
     Purchase_Limit INT NOT NULL,
     Status VARCHAR(32) NOT NULL,
