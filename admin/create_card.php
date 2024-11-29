@@ -11,60 +11,57 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
-$username = "";
-$password = "";
-$first_name = "";
-$last_name = "";
-$dob = "";
-$gender = "";
-$email = "";
-$phone_num = "";
-$address = "";
+$UserID           =  "";
+$Card_Number      =  "";
+$CVV              =  "";
+$IBAN             =  "";
+$PIN              =  "";
+$Purchase_Limit   =  "";
+$Status           =  "";
+$Expiration_Date  =  "";
 
 $errorMessage = "";
 $successMessage = "";
 
 if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
-    $username    =  $_POST["Username"];
-    $password    =  $_POST["Password"];
-    $first_name  =  $_POST["First_Name"];
-    $last_name   =  $_POST["Last_Name"];
-    $dob         =  $_POST["Date_of_Birth"];
-    $gender      =  $_POST["Gender"];
-    $email       =  $_POST["Email"];
-    $phone_num   =  $_POST["Phone_Number"];
-    $address     =  $_POST["Address"];
+    $UserID           =  $_POST["UserID"];
+    $Card_Number      =  $_POST["Card_Number"];
+    $CVV              =  $_POST["CVV"];
+    $IBAN             =  $_POST["IBAN"];
+    $PIN              =  $_POST["PIN"];
+    $Purchase_Limit   =  $_POST["Purchase_Limit"];
+    $Status           =  $_POST["Status"];
+    $Expiration_Date  =  $_POST["Expiration_Date"];
 
     do {
-        if ( empty($username)  || empty($password)  || empty($first_name) ||
-             empty($last_name) || empty($dob)       || empty($gender)     ||
-             empty($email)     || empty($phone_num) || empty($address)
+        if ( empty($UserID) || empty($Card_Number) || empty($CVV) ||
+             empty($IBAN)   || empty($PIN)         || empty($Purchase_Limit) ||
+             empty($Status) || empty($Expiration_Date)
         ) {
             $errorMessage = "all fields are required";
             break;
         }
 
-        $sql = "INSERT INTO Users (Username, Password, First_Name, Last_Name, Date_of_Birth, Gender, Email, Phone_Number, Address)
-                VALUES ('$username', '$password', '$first_name', '$last_name', '$dob', '$gender', '$email', '$phone_num', '$address')";
+        $sql = "INSERT INTO Cards (UserID, Card_Number, CVV, IBAN, PIN, Purchase_Limit, Status, Expiration_Date)
+                VALUES ('$UserID', '$Card_Number', '$CVV', '$IBAN', '$PIN', '$Purchase_Limit', '$Status', '$Expiration_Date')";
         $result = $connection->query($sql);
 
         if (!$result) {
             $errorMessage = "Invalid query: " . $connection->error;
         }
 
-        $username = "";
-        $password = "";
-        $first_name = "";
-        $last_name = "";
-        $dob = "";
-        $gender = "";
-        $email = "";
-        $phone_num = "";
-        $address = "";
+        $UserID           =  "";
+        $Card_Number      =  "";
+        $CVV              =  "";
+        $IBAN             =  "";
+        $PIN              =  "";
+        $Purchase_Limit   =  "";
+        $Status           =  "";
+        $Expiration_Date  =  "";
 
         $successMessage = "Client added succesfully!";
 
-        header("location: /POS/admin/read_clients.php");
+        header("location: /POS/admin/read_cards.php");
         exit;
 
     } while (false);
@@ -97,57 +94,51 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
         <form method="post">
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Username</label>
+                <label class="col-sm-3 col-form-label">UserID</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Username" value="<?php echo $username; ?>">
+                    <input type="text" class="form-control" name="UserID" value="<?php echo $UserID; ?>">
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Password</label>
+                <label class="col-sm-3 col-form-label">Card Number</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Password" value="<?php echo $password; ?>">
+                    <input type="text" class="form-control" name="Card_Number" value="<?php echo $Card_Number; ?>">
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">First Name</label>
+                <label class="col-sm-3 col-form-label">CVV</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="First Name" value="<?php echo $first_name; ?>">
+                    <input type="text" class="form-control" name="CVV" value="<?php echo $CVV; ?>">
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Last Name</label>
+                <label class="col-sm-3 col-form-label">IBAN</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Last Name" value="<?php echo $last_name; ?>">
+                    <input type="text" class="form-control" name="IBAN" value="<?php echo $IBAN; ?>">
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Date of Birth</label>
+                <label class="col-sm-3 col-form-label">PIN</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Date of Birth" value="<?php echo $dob; ?>">
+                    <input type="text" class="form-control" name="PIN" value="<?php echo $PIN; ?>">
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Gender</label>
+                <label class="col-sm-3 col-form-label">Purchase Limit</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Gender" value="<?php echo $gender; ?>">
+                    <input type="text" class="form-control" name="Purchase_Limit" value="<?php echo $Purchase_Limit; ?>">
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Email</label>
+                <label class="col-sm-3 col-form-label">Status</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Email" value="<?php echo $email; ?>">
+                    <input type="text" class="form-control" name="Status" value="<?php echo $Status; ?>">
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Phone Number</label>
+                <label class="col-sm-3 col-form-label">Expiration Date</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Phone Number" value="<?php echo $phone_num; ?>">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Address</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Address" value="<?php echo $address; ?>">
+                    <input type="text" class="form-control" name="Expiration_Date" value="<?php echo $Expiration_Date; ?>">
                 </div>
             </div>
 
@@ -169,10 +160,10 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
                 <div class="col-sm-3 d-grid">
-                    <a class="btn btn-outline-primary" href="/POS/admin/read_clients.php" role="button">Cancel</a>
+                    <a class="btn btn-outline-primary" href="/POS/admin/read_cards.php" role="button">Cancel</a>
                 </div>
             </div>
         </form>
-    </div>
+    </div>    
 </body>
 </html>

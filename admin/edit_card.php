@@ -11,21 +11,25 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
-$transfer_limit  =  "";
-$status          =  "";
+$Card_Number      =  "";
+$CVV              =  "";
+$PIN              =  "";
+$Purchase_Limit   =  "";
+$Status           =  "";
+$Expiration_Date  =  "";
 
 $errorMessage   = "";
 $successMessage = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    if (!isset($_GET["IBAN"])) {
-        header("location: /POS/admin/edit_account.php");
+    if (!isset($_GET["Card_Number"])) {
+        header("location: /POS/admin/edit_card.php");
         exit;
     }
 
-    $IBAN = $_GET["IBAN"];
+    $Card_Number = $_GET["Card_Number"];
 
-    $sql = "SELECT * FROM Accounts WHERE IBAN=$IBAN";
+    $sql = "SELECT * FROM Cards WHERE Card_Number=$Card_Number";
     $result = $connection->query($sql);
     $row = $result->fetch_assoc();
 
@@ -34,22 +38,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         exit;
     }
 
-    $transfer_limit = $row["Transfer_Limit"];
-    $status = $row["Status"];
+    $Card_Number = $row["Card_Number"];
+    $CVV = $row["CVV"];
+    $PIN = $row["PIN"];
+    $Purchase_Limit = $row["Purchase_Limit"];
+    $Status = $row["Status"];
+    $Expiration_Date = $row["Expiration_Date"];
+
 } else {
-    $IBAN = isset($_POST["IBAN"]) ? $_POST["IBAN"] : '';
-    $transfer_limit = isset($_POST["Transfer_Limit"]) ? $_POST["Transfer_Limit"] : '';
-    $status = isset($_POST["Status"]) ? $_POST["Status"] : '';
+    $Card_Number = isset($_POST["Card_Number"]) ? $_POST["Card_Number"] : '';
+    $CVV = isset($_POST["CVV"]) ? $_POST["CVV"] : '';
+    $PIN = isset($_POST["PIN"]) ? $_POST["PIN"] : '';
+    $Purchase_Limit = isset($_POST["Purchase_Limit"]) ? $_POST["Purchase_Limit"] : '';
+    $Status = isset($_POST["Status"]) ? $_POST["Status"] : '';
+    $Expiration_Date = isset($_POST["Expiration_Date"]) ? $_POST["Expiration_Date"] : '';
 
     do {
-        if (empty($transfer_limit) || empty($status) || empty($IBAN)) {
+        if ( empty($Card_Number) || empty($CVV) || empty($PIN) ||
+             empty($Purchase_Limit) || empty($Status) || empty($Expiration_Date)
+        ) {
             $errorMessage = "All fields are required";
             break;
         }
 
-        $sql = "UPDATE Accounts " .
-               "SET Transfer_Limit='$transfer_limit', Status='$status' " .
-               "WHERE IBAN=$IBAN";
+        $sql = "UPDATE Cards " .
+               "SET Cards_Number='$Card_Number', CVV='$CVV', Pin='$PIN', Purchase_Limit='$Purchase_Limit', Status='$Status', Expiration_Date='$Expiration_Date'" .
+               "WHERE Card_Number=$Card_Number";
 
         $result = $connection->query($sql);
 
@@ -77,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 </head>
 <body>
     <div class="container my-5">
-        <h2>New Client</h2>
+        <h2>New Card</h2>
 
         <?php
         if ( !empty($errorMessage) ) {
@@ -91,17 +105,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         ?>
 
         <form method="post">
-            <input type="hidden" name="IBAN" value="<?php echo $IBAN; ?>">
+            <input type="hidden" name="Card_Number" value="<?php echo $Card_Number; ?>">
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Transfer Limit</label>
+                <label class="col-sm-3 col-form-label">Card Number</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Transfer_Limit" value="<?php echo $transfer_limit; ?>">
+                    <input type="text" class="form-control" name="Card_Number" value="<?php echo $Card_Number; ?>">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">CVV</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="CVV" value="<?php echo $CVV; ?>">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">CVV</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="CVV" value="<?php echo $CVV; ?>">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Purchase Limit</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="Purchase_Limit" value="<?php echo $Purchase_Limit; ?>">
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Status</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Status" value="<?php echo $status; ?>">
+                    <input type="text" class="form-control" name="Status" value="<?php echo $Status; ?>">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Expiration Date</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="Expiration_Date" value="<?php echo $Expiration_Date; ?>">
                 </div>
             </div>
 
@@ -123,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
                 <div class="col-sm-3 d-grid">
-                    <a class="btn btn-outline-primary" href="/POS_website/admin/read_accounts.php" role="button">Cancel</a>
+                    <a class="btn btn-outline-primary" href="/POS/admin/read_cards.php" role="button">Cancel</a>
                 </div>
             </div>
         </form>
