@@ -15,7 +15,7 @@ if ( isset($_GET["Card_Number"]) ) {
         die("Connection failed: " . $connection->connect_error);
     }
 
-    $sql = "DELETE FROM Cards WHERE Card_Number=$Card_Number";
+    $sql = "DELETE FROM Cards WHERE Card_Number='$Card_Number'";
     $connection->query($sql);
 }
 

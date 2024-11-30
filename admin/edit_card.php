@@ -29,12 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $Card_Number = $_GET["Card_Number"];
 
-    $sql = "SELECT * FROM Cards WHERE Card_Number=$Card_Number";
+    $sql = "SELECT * FROM Cards WHERE Card_Number='$Card_Number'";
     $result = $connection->query($sql);
     $row = $result->fetch_assoc();
 
     if (!$row) {
-        header("location: /POS/admin/read_accounts.php");
+        header("location: /POS/admin/read_cards.php");
         exit;
     }
 
@@ -62,8 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
 
         $sql = "UPDATE Cards " .
-               "SET Cards_Number='$Card_Number', CVV='$CVV', Pin='$PIN', Purchase_Limit='$Purchase_Limit', Status='$Status', Expiration_Date='$Expiration_Date'" .
-               "WHERE Card_Number=$Card_Number";
+               "SET Card_Number='$Card_Number', CVV='$CVV', Pin='$PIN', Purchase_Limit='$Purchase_Limit', Status='$Status', Expiration_Date='$Expiration_Date'" .
+               "WHERE Card_Number='$Card_Number'";
 
         $result = $connection->query($sql);
 
@@ -72,8 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             break;
         }
 
-        $successMessage = "Account updated successfully!";
-        header("location: /POS/admin/read_accounts.php");
+        $successMessage = "Card updated successfully!";
+        header("location: /POS/admin/read_cards.php");
         exit;
     } while (false);
 }
@@ -119,9 +119,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">CVV</label>
+                <label class="col-sm-3 col-form-label">PIN</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="CVV" value="<?php echo $CVV; ?>">
+                    <input type="text" class="form-control" name="PIN" value="<?php echo $PIN; ?>">
                 </div>
             </div>
             <div class="row mb-3">

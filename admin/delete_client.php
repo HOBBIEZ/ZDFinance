@@ -19,7 +19,7 @@ if ( isset($_GET["UserID"]) ) {
     $connection->query($sql);
 }
 
-header("location: /POS_website/admin/read_clients.php");
+header("location: /POS/admin/read_clients.php");
 exit;
 
 ?>
