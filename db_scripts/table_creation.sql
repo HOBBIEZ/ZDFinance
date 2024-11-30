@@ -76,7 +76,7 @@ CREATE TABLE Cards (
 
 
 CREATE TABLE Audit_Logs (
-    Log_Id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    LogID BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     UserID INT NOT NULL,
     Type ENUM('login', 'logout', 'signup', 'delete', 'acc_crt', 'acc_del', 'card_crt', 'card_del', 'transaction') NOT NULL,
     Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
