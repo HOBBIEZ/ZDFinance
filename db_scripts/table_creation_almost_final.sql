@@ -12,12 +12,24 @@ CREATE TABLE Users (
     Creation_Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     First_Name VARCHAR(64) NOT NULL CHECK (First_Name REGEXP '^[A-Za-z]+$'), 
     Last_Name VARCHAR(64) NOT NULL CHECK (Last_Name REGEXP '^[A-Za-z]+$'), 
-    Date_of_Birth DATE NOT NULL CHECK (Date_of_Birth <= CURDATE() - INTERVAL 18 YEAR), 
+    Date_of_Birth DATE NOT NULL, 
     Gender ENUM('male', 'female') NOT NULL, 
     Email VARCHAR(64) NOT NULL UNIQUE CHECK (Email REGEXP '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'), 
     Phone_Number VARCHAR(15) NOT NULL UNIQUE CHECK (Phone_Number REGEXP '^\\+?[0-9]{7,15}$'), 
     Address VARCHAR(255) NOT NULL
 );
+
+DELIMITER $$
+CREATE TRIGGER check_age_before_insert
+BEFORE INSERT ON Users
+FOR EACH ROW
+BEGIN
+    IF NEW.Date_of_Birth > CURDATE() - INTERVAL 18 YEAR THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You must be at least 18 years old.';
+    END IF;
+END $$
+DELIMITER ;
+
 
 CREATE TABLE Accounts (
     IBAN BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -44,16 +56,29 @@ CREATE TABLE Internal_Transactions (
 	TransactionID BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     UserID INT NOT NULL,
     From_IBAN BIGINT UNSIGNED NOT NULL,
-    To_IBAN BIGINT UNSIGNED NOT NULL,
+    To_IBAN BIGINT UNSIGNED NOT NULL CHECK (From_IBAN <> To_IBAN),
     Description VARCHAR(256),
-    Amount REAL NOT NULL CHECK (Amount >= 10),
+    Amount DECIMAL(10, 2) NOT NULL CHECK (Amount >= 10),
     Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Status ENUM('pending', 'finished') NOT NULL,
-    CHECK (From_IBAN <> To_IBAN)
     FOREIGN KEY (UserID) REFERENCES Users(UserID),
     FOREIGN KEY (From_IBAN) REFERENCES Accounts(IBAN),
     FOREIGN KEY (To_IBAN) REFERENCES Accounts(IBAN)
 );
+
+-- DELIMITER //
+
+-- CREATE TRIGGER before_insert_internal_transaction
+-- BEFORE INSERT ON Internal_Transactions
+-- FOR EACH ROW
+-- BEGIN
+--     IF NEW.From_IBAN = NEW.To_IBAN THEN
+--         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid IBAN';
+--     END IF;
+-- END //
+
+-- DELIMITER ;
+
 
 CREATE TABLE Cards (
     Card_Number BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -70,8 +95,7 @@ CREATE TABLE Cards (
     FOREIGN KEY (IBAN) REFERENCES Accounts(IBAN)
 ) AUTO_INCREMENT = 100000000;
 
-DELIMITER //
-
+DELIMITER $$
 CREATE TRIGGER before_insert_cards
 BEFORE INSERT ON Cards
 FOR EACH ROW
@@ -79,7 +103,13 @@ BEGIN
     IF NEW.CVV IS NULL THEN
         SET NEW.CVV = (SELECT IFNULL(MAX(CVV), -1) + 1 FROM Cards) % 1000;
     END IF;
-END;
-//
-
+END$$
 DELIMITER ;
+
+CREATE TABLE Audit_Logs (
+    Log_Id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    UserID INT NOT NULL,
+    Type ENUM('login', 'logout', 'signup', 'delete', 'acc_crt', 'acc_del', 'card_crt', 'card_del', 'transaction') NOT NULL,
+    Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
