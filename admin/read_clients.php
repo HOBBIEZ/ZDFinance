@@ -5,12 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Webpage</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header h1, .header h3 {
+            margin: 0;
+        }
+        .header h1 a {
+            color: white;
+            text-decoration: none;
+        }
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .btn-container a {
+            width: 200px;
+        }
+        .chart-container {
+            margin-top: 50px;
+        }
+        canvas {
+            max-width: 100%;
+            height: 400px;
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
+    <!-- Header -->
+    <div class="header">
+        <h1><a href="index.html">ZDFinance</a></h1>
+        <h3>Admin WebPage (God mode)</h3>
+    </div>
     <div class="container my-5">
         <h2>
             List of Clients
-            <a class="btn btn-primary" href="/POS_website/admin/create_client.php" role="button">New Client</a>
+            <a class="btn btn-primary" href="/POS/admin/create_client.php" role="button">New Client</a>
         </h2>
         <br>
         <table class="table">
@@ -65,8 +105,8 @@
                         <td>$row[Phone_Number]</td>
                         <td>$row[Address]</td>
                         <td>
-                            <a class='btn btn-primary btn-sm' href='/POS_website/admin/edit_client.php?UserID=$row[UserID]'>Edit</a>
-                            <a class='btn btn-danger btn-sm' href='/POS_website/admin/delete_client.php?UserID=$row[UserID]'>Delete</a>
+                            <a class='btn btn-primary btn-sm' href='/POS/admin/edit_client.php?UserID=$row[UserID]'>Edit</a>
+                            <a class='btn btn-danger btn-sm' href='/POS/admin/delete_client.php?UserID=$row[UserID]'>Delete</a>
                         </td>
                     </tr>
                     ";

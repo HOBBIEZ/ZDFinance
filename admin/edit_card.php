@@ -91,70 +91,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 </head>
 <body>
     <div class="container my-5">
-        <h2>New Card</h2>
+        <h2>Edit Card</h2>
+        <br><br>
 
-        <?php
-        if ( !empty($errorMessage) ) {
-            echo "
-            <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-                <strong>$errorMessage</strong>
-                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+        <?php if (!empty($errorMessage)) : ?>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong><?= $errorMessage; ?></strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            ";
-        }
-        ?>
+        <?php endif; ?>
 
         <form method="post">
-            <input type="hidden" name="Card_Number" value="<?php echo $Card_Number; ?>">
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Card Number</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Card_Number" value="<?php echo $Card_Number; ?>">
+                    <input type="number" class="form-control" name="Card_Number" value="<?= $Card_Number; ?>" maxlength="16" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">CVV</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="CVV" value="<?php echo $CVV; ?>">
+                    <input type="number" class="form-control" name="CVV" value="<?= $CVV; ?>" maxlength="3" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">PIN</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="PIN" value="<?php echo $PIN; ?>">
+                    <input type="number" class="form-control" name="PIN" value="<?= $PIN; ?>" maxlength="4" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Purchase Limit</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Purchase_Limit" value="<?php echo $Purchase_Limit; ?>">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Status</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Status" value="<?php echo $Status; ?>">
+                    <input type="number" class="form-control" name="Purchase_Limit" value="<?= $Purchase_Limit; ?>" min="0" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Expiration Date</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Expiration_Date" value="<?php echo $Expiration_Date; ?>">
+                    <input type="date" class="form-control" name="Expiration_Date" value="<?= $Expiration_Date; ?>" required>
                 </div>
             </div>
 
-            <?php
-            if ( !empty($successMessage) ) {
-                echo "
-                <div class='row mb-3'>
-                    <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-                        <strong>$successMessage</strong>
-                        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-                    </div>
+            <?php if (!empty($successMessage)) : ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong><?= $successMessage; ?></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                ";
-            }
-            ?>
+            <?php endif; ?>
 
             <div class="row mb-3">
                 <div class="offset-sm-3 col-sm-3 d-grid">
@@ -165,6 +149,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 </div>
             </div>
         </form>
-    </div>    
+    </div>
 </body>
 </html>

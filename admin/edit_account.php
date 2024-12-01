@@ -12,7 +12,6 @@ if ($connection->connect_error) {
 }
 
 $transfer_limit  =  "";
-$status          =  "";
 
 $errorMessage   = "";
 $successMessage = "";
@@ -35,20 +34,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     $transfer_limit = $row["Transfer_Limit"];
-    $status = $row["Status"];
 } else {
     $IBAN = isset($_POST["IBAN"]) ? $_POST["IBAN"] : '';
     $transfer_limit = isset($_POST["Transfer_Limit"]) ? $_POST["Transfer_Limit"] : '';
-    $status = isset($_POST["Status"]) ? $_POST["Status"] : '';
 
     do {
-        if (empty($transfer_limit) || empty($status) || empty($IBAN)) {
+        if (empty($transfer_limit) || empty($IBAN)) {
             $errorMessage = "All fields are required";
             break;
         }
 
         $sql = "UPDATE Accounts " .
-               "SET Transfer_Limit='$transfer_limit', Status='$status' " .
+               "SET Transfer_Limit='$transfer_limit'" .
                "WHERE IBAN=$IBAN";
 
         $result = $connection->query($sql);
@@ -77,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 </head>
 <body>
     <div class="container my-5">
-        <h2>New Client</h2>
+        <h2>Edit Account</h2>
 
         <?php
         if ( !empty($errorMessage) ) {
@@ -95,13 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Transfer Limit</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Transfer_Limit" value="<?php echo $transfer_limit; ?>">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Status</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Status" value="<?php echo $status; ?>">
+                    <input type="number" class="form-control" name="Transfer_Limit" value="<?php echo $tranfer_limit; ?>" min="0">
                 </div>
             </div>
 
@@ -123,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
                 <div class="col-sm-3 d-grid">
-                    <a class="btn btn-outline-primary" href="/POS_website/admin/read_accounts.php" role="button">Cancel</a>
+                    <a class="btn btn-outline-primary" href="/POS/admin/read_accounts.php" role="button">Cancel</a>
                 </div>
             </div>
         </form>

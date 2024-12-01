@@ -13,35 +13,33 @@ if ($connection->connect_error) {
 
 $UserID = "";
 $tranfer_limit = "";
-$status = "";
 
 $errorMessage = "";
 $successMessage = "";
 
-if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
-    $UserID         =  $_POST["UserID"];
-    $tranfer_limit  =  $_POST["Transfer_Limit"];
-    $status         =  $_POST["Status"];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $UserID = $_POST["UserID"];
+    $tranfer_limit = $_POST["Transfer_Limit"];
 
     do {
-        if ( empty($UserID) || empty($tranfer_limit) || empty($status) ) {
-            $errorMessage = "all fields are required";
+        if (empty($UserID) || empty($tranfer_limit)) {
+            $errorMessage = "All fields are required";
             break;
         }
 
-        $sql = "INSERT INTO Accounts (UserID, Transfer_Limit, Status)
-                VALUES ('$UserID', '$tranfer_limit', '$status')";
+        $sql = "INSERT INTO Accounts (UserID, Transfer_Limit)
+                VALUES ('$UserID', '$tranfer_limit')";
         $result = $connection->query($sql);
 
         if (!$result) {
             $errorMessage = "Invalid query: " . $connection->error;
+            break;
         }
 
         $UserID = "";
         $tranfer_limit = "";
-        $status = "";
 
-        $successMessage = "Account added succesfully!";
+        $successMessage = "Account added successfully!";
 
         header("location: /POS/admin/read_accounts.php");
         exit;
@@ -55,7 +53,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Client</title>
+    <title>Create New Account</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
@@ -64,7 +62,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
         <h2>New Account</h2>
 
         <?php
-        if ( !empty($errorMessage) ) {
+        if (!empty($errorMessage)) {
             echo "
             <div class='alert alert-warning alert-dismissible fade show' role='alert'>
                 <strong>$errorMessage</strong>
@@ -78,28 +76,21 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">UserID</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="UserID" value="<?php echo $UserID; ?>">
+                    <input type="number" class="form-control" name="UserID" value="<?php echo $UserID; ?>">
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Tranfer Limit</label>
+                <label class="col-sm-3 col-form-label">Transfer Limit</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Transfer_Limit" value="<?php echo $tranfer_limit; ?>">
+                    <input type="number" class="form-control" name="Transfer_Limit" value="<?php echo $tranfer_limit; ?>" min="0">
                 </div>
             </div>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Status</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Status" value="<?php echo $status; ?>">
-                </div>
-            </div>
-        
 
             <?php
-            if ( !empty($successMessage) ) {
+            if (!empty($successMessage)) {
                 echo "
                 <div class='row mb-3'>
-                    <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                    <div class='alert alert-success alert-dismissible fade show' role='alert'>
                         <strong>$successMessage</strong>
                         <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
                     </div>
@@ -117,6 +108,6 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
                 </div>
             </div>
         </form>
-    </div>    
+    </div>
 </body>
 </html>

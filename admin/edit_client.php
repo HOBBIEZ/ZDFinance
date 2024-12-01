@@ -121,67 +121,70 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
         ?>
 
         <form method="post">
-            <input type="hidden" name="UserID" value="<?php echo $UserID; ?>">
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Username</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Username" value="<?php echo $username; ?>">
+                    <input type="text" class="form-control" name="Username" value="<?php echo $username; ?>" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Password</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Password" value="<?php echo $password; ?>">
+                    <input type="password" class="form-control" name="Password" value="<?php echo $password; ?>" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">First Name</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="First Name" value="<?php echo $first_name; ?>">
+                    <input type="text" class="form-control" name="First_Name" value="<?php echo $first_name; ?>" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Last Name</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Last Name" value="<?php echo $last_name; ?>">
+                    <input type="text" class="form-control" name="Last_Name" value="<?php echo $last_name; ?>" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Date of Birth</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Date of Birth" value="<?php echo $dob; ?>">
+                    <input type="date" class="form-control" name="Date_of_Birth" value="<?php echo $dob; ?>" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Gender</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Gender" value="<?php echo $gender; ?>">
+                    <select class="form-control" name="Gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="male" <?php echo $gender == 'male' ? 'selected' : ''; ?>>Male</option>
+                        <option value="female" <?php echo $gender == 'female' ? 'selected' : ''; ?>>Female</option>
+                    </select>
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Email</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Email" value="<?php echo $email; ?>">
+                    <input type="email" class="form-control" name="Email" value="<?php echo $email; ?>" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Phone Number</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Phone Number" value="<?php echo $phone_num; ?>">
+                    <input type="tel" class="form-control" name="Phone_Number" value="<?php echo $phone_num; ?>" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Address</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Address" value="<?php echo $address; ?>">
+                    <textarea class="form-control" name="Address" required><?php echo $address; ?></textarea>
                 </div>
             </div>
 
             <?php
-            if ( !empty($successMessage) ) {
+            if (!empty($successMessage)) {
                 echo "
                 <div class='row mb-3'>
-                    <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                    <div class='alert alert-success alert-dismissible fade show' role='alert'>
                         <strong>$successMessage</strong>
                         <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
                     </div>
@@ -199,6 +202,6 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
                 </div>
             </div>
         </form>
-    </div>    
+    </div>
 </body>
 </html>
