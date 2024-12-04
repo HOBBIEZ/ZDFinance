@@ -1,8 +1,20 @@
 <?php
+include('../php/db_connection.php');
 session_start();
 if (!isset($_SESSION['user'])) {
     header("Location: boot.html");
     exit();
+} else {
+  $stmt = $conn->prepare("SELECT Status FROM Users WHERE Username = ?");
+  $stmt->bind_param('s', $_SESSION['user']);
+  $stmt->execute();
+  $stmt->store_result();
+  $stmt->bind_result($status);
+  $stmt->fetch();
+  if ($status === 'deleted') {
+    header("Location: ../php/logout.php");
+    exit();
+  }           
 }
 ?>
 
