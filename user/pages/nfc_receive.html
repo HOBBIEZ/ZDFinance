@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+    <script src="https://unpkg.com/@zxing/library@0.18.6/umd/index.min.js"></script>
+</head>
+<body>
+    <h1>QR Code Scanner</h1>
+    <p>Scan a QR code using your camera:</p>
+    <video id="preview" width="100%" height="auto" style="border: 1px solid black;"></video>
+    <div id="result"></div>
+
+    <script>
+        const codeReader = new ZXing.BrowserQRCodeReader();
+        
+        // Function to start the scanner and request camera permission
+        function startScanner() {
+            // List available video input devices (cameras)
+            codeReader.listVideoInputDevices()
+                .then(videoInputDevices => {
+                    if (videoInputDevices.length > 0) {
+                        // We can explicitly choose the rear camera for mobile devices
+                        let selectedDeviceId;
+                        if (videoInputDevices.length === 1) {
+                            // Only one camera, use it
+                            selectedDeviceId = videoInputDevices[0].deviceId;
+                        } else {
+                            // Select rear camera by preference
+                            selectedDeviceId = videoInputDevices.find(device => device.label.includes("back") || device.label.includes("rear"))?.deviceId || videoInputDevices[0].deviceId;
+                        }
+
+                        // Start decoding QR code from the selected camera
+                        codeReader.decodeFromVideoDevice(selectedDeviceId, 'preview', (result, error) => {
+                            if (result) {
+                                // Display the scanned text
+                                document.getElementById('result').innerText = `Scanned text: ${result.text}`;
+                            }
+                            if (error) {
+                                console.error(error);
+                            }
+                        });
+                    } else {
+                        alert('No video input devices found');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error accessing video input devices:', err);
+                });
+        }
+
+        // Start the scanner when the page loads
+        startScanner();
+    </script>
+</body>
+</html>

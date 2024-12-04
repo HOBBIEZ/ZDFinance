@@ -1,0 +1,99 @@
+/* Body */
+body {
+    background-color: #f8f9fa; /* Light background */
+}
+
+/* Navbar styles */
+.navbar {
+    background: #23272a;
+    padding: 1rem;
+}
+.navbar .btn {
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+.navbar .nav-link {
+    color: #fff;
+    transition: color 0.3s;
+}
+.navbar .nav-link:hover {
+    color: #17a2b8; /* Bright blue hover */
+}
+.navbar .btn:hover {
+    background-color: #6db3f2;
+    color: white;
+}
+.navbar-toggler {
+    border: 1px solid white; /* Add a border to make the button visible */
+}
+.navbar-toggler-icon {
+    background-color: white; /* Ensure the icon is visible */
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #3a77ff, #6db3f2);
+    color: white;
+    padding: 100px 20px;
+    text-align: center;
+}
+
+/* Features */
+.feature-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Testimonials */
+.testimonial-card {
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+}
+.testimonial-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* How It Works Section */
+.step-card {
+    text-align: center;
+    padding: 20px;
+    transition: transform 0.2s;
+}
+.step-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Footer */
+footer {
+    background: #343a40;
+    color: white;
+    padding: 20px;
+}
+
+/* Modals */
+.btn-primary:hover {
+    background-color: #6db3f2;
+}
+.forgot-password-link {
+    color: #6db3f2;
+    text-decoration: none;
+}
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+/* Account Page */
+
+.card {
+border: none;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
