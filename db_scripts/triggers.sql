@@ -1,3 +1,14 @@
+DROP TRIGGER IF EXISTS before_insert_cards;
+DROP TRIGGER IF EXISTS check_age_before_insert;
+DROP TRIGGER IF EXISTS after_user_creation;
+DROP TRIGGER IF EXISTS after_user_deletion;
+DROP TRIGGER IF EXISTS after_account_creation;
+DROP TRIGGER IF EXISTS after_account_deletion;
+DROP TRIGGER IF EXISTS after_card_creation;
+DROP TRIGGER IF EXISTS after_card_deletion;
+DROP TRIGGER IF EXISTS after_internal_transaction;
+DROP TRIGGER IF EXISTS after_external_transaction;
+
 DELIMITER $$
 CREATE TRIGGER before_insert_cards
 BEFORE INSERT ON Cards
@@ -48,12 +59,14 @@ DELIMITER ;
 
 DELIMITER $$
 CREATE TRIGGER after_account_deletion
-AFTER DELETE ON Accounts
+AFTER UPDATE ON Users
 FOR EACH ROW
 BEGIN
-    INSERT INTO Audit_Logs (UserID, Type, Timestamp) VALUES (OLD.UserID, 'acc_del', CURRENT_TIMESTAMP);
+    IF OLD.Status != NEW.Status AND NEW.Status = 'inactive' THEN
+        INSERT INTO Audit_Logs (UserID, Type, Timestamp)
+        VALUES (OLD.UserID, 'inactive', CURRENT_TIMESTAMP);
+    END IF;
 END$$
-DELIMITER ;
 
 
 

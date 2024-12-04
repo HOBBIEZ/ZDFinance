@@ -17,7 +17,7 @@ CREATE TABLE Users (
     Email VARCHAR(64) NOT NULL UNIQUE CHECK (Email REGEXP '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'), 
     Phone_Number VARCHAR(15) NOT NULL UNIQUE CHECK (Phone_Number REGEXP '^\\+?[0-9]{7,15}$'), 
     Address VARCHAR(255) NOT NULL,
-    Status Enum('active', 'inactive') NOT NULL
+    Status Enum('active', 'deleted') NOT NULL DEFAULT 'active'
 );
 
 CREATE TABLE Accounts (
@@ -26,7 +26,7 @@ CREATE TABLE Accounts (
     Transfer_Limit INT UNSIGNED NOT NULL,
     Balance DECIMAL(15, 2) NOT NULL DEFAULT 0.00,
     Creation_Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Status ENUM('active', 'inactive', 'blocked') NOT NULL DEFAULT 'active',
+    Status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 ) AUTO_INCREMENT = 1000000000000000;
 
@@ -63,7 +63,7 @@ CREATE TABLE Cards (
     IBAN BIGINT UNSIGNED NOT NULL,
     PIN INT NOT NULL CHECK (PIN BETWEEN 0 AND 9999),
     Purchase_Limit INT NOT NULL CHECK (Purchase_Limit >= 10),
-    Status ENUM('active', 'inactive', 'blocked') NOT NULL,
+    Status ENUM('active', 'inactive') NOT NULL,
     Expiration_Date DATE GENERATED ALWAYS AS (DATE_ADD(Creation_Date, INTERVAL 4 YEAR)) STORED,
     PRIMARY KEY (Card_Number, CVV),
     FOREIGN KEY (UserId) REFERENCES Users(UserID),
