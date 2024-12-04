@@ -250,7 +250,7 @@ if (!isset($_SESSION['user'])) {
           <div class="modal-content">
               <div class="modal-header">
                   <h5 class="modal-title" id="amountModalLabel">Receive funds</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="window.location.href='account_page.php';"></button>
               </div>
               <div class="modal-body">
                   <div id="amountFormContainer">
