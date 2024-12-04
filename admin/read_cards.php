@@ -49,7 +49,7 @@
     <div class="container my-5">
         <h2>
             List of Cards
-            <a class="btn btn-primary" href="/POS/admin/create_card.php" role="button">New Card</a>
+            <a class="btn btn-primary" href="/ZDFinance/admin/create_card.php" role="button">New Card</a>
         </h2>
         <br>
         <table class="table">
@@ -97,8 +97,8 @@
                         <td>$row[Status]</td>
                         <td>$row[Expiration_Date]</td>
                         <td>
-                            <a class='btn btn-primary btn-sm' href='/POS/admin/edit_card.php?Card_Number=$row[Card_Number]'>Edit</a>
-                            <a class='btn btn-danger btn-sm' href='/POS/admin/delete_card.php?Card_Number=$row[Card_Number]'>Delete</a>
+                            <a class='btn btn-primary btn-sm' href='/ZDFinance/admin/edit_card.php?Card_Number=$row[Card_Number]'>Edit</a>
+                            <a class='btn btn-danger btn-sm' href='/ZDFinance/admin/delete_card.php?Card_Number=$row[Card_Number]'>Delete</a>
                         </td>
                     </tr>
                     ";

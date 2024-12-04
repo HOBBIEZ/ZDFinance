@@ -19,7 +19,7 @@ if ( isset($_GET["IBAN"]) ) {
     $connection->query($sql);
 }
 
-header("location: /POS/admin/read_accounts.php");
+header("location: /ZDFinance/admin/read_accounts.php");
 exit;
 
 ?>

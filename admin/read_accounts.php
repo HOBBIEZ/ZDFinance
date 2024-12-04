@@ -43,13 +43,13 @@
 </head>
 <body>
     <div class="header">
-        <h1><a href="/POS/admin/index.html">ZDFinance</a></h1>
+        <h1><a href="/ZDFinance/admin/index.html">ZDFinance</a></h1>
         <h3>Admin WebPage (God mode)</h3>
     </div>
     <div class="container my-5">
         <h2>
             List of Accounts
-            <a class="btn btn-primary" href="/POS/admin/create_account.php" role="button">New Account</a>
+            <a class="btn btn-primary" href="/ZDFinance/admin/create_account.php" role="button">New Account</a>
         </h2>
         <br>
         <table class="table">
@@ -93,8 +93,8 @@
                         <td>$row[Creation_Date]</td>
                         <td>$row[Status]</td>
                         <td>
-                            <a class='btn btn-primary btn-sm' href='/POS/admin/edit_account.php?IBAN=$row[IBAN]'>Edit</a>
-                            <a class='btn btn-danger btn-sm' href='/POS/admin/delete_account.php?IBAN=$row[IBAN]'>Delete</a>
+                            <a class='btn btn-primary btn-sm' href='/ZDFinance/admin/edit_account.php?IBAN=$row[IBAN]'>Edit</a>
+                            <a class='btn btn-danger btn-sm' href='/ZDFinance/admin/delete_account.php?IBAN=$row[IBAN]'>Delete</a>
                         </td>
                     </tr>
                     ";

@@ -19,7 +19,7 @@ if ( isset($_GET["Card_Number"]) ) {
     $connection->query($sql);
 }
 
-header("location: /POS/admin/read_cards.php");
+header("location: /ZDFinance/admin/read_cards.php");
 exit;
 
 ?>

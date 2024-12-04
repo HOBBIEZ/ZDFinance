@@ -49,7 +49,7 @@
     <div class="container my-5">
         <h2>
             List of Clients
-            <a class="btn btn-primary" href="/POS/admin/create_client.php" role="button">New Client</a>
+            <a class="btn btn-primary" href="/ZDFinance/admin/create_client.php" role="button">New Client</a>
         </h2>
         <br>
         <table class="table">
@@ -106,8 +106,8 @@
                         <td>$row[Address]</td>
                         <td>$row[Status]</td>
                         <td>
-                            <a class='btn btn-primary btn-sm' href='/POS/admin/edit_client.php?UserID=$row[UserID]'>Edit</a>
-                            <a class='btn btn-danger btn-sm' href='/POS/admin/delete_client.php?UserID=$row[UserID]'>Delete</a>
+                            <a class='btn btn-primary btn-sm' href='/ZDFinance/admin/edit_client.php?UserID=$row[UserID]'>Edit</a>
+                            <a class='btn btn-danger btn-sm' href='/ZDFinance/admin/delete_client.php?UserID=$row[UserID]'>Delete</a>
                         </td>
                     </tr>
                     ";

@@ -19,7 +19,7 @@ if ( isset($_GET["UserID"]) ) {
     $connection->query($sql);
 }
 
-header("location: /POS/admin/read_clients.php");
+header("location: /ZDFinance/admin/read_clients.php");
 exit;
 
 ?>

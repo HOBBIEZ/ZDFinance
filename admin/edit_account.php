@@ -19,7 +19,7 @@ $successMessage = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (!isset($_GET["IBAN"])) {
-        header("location: /POS/admin/edit_account.php");
+        header("location: /ZDFinance/admin/edit_account.php");
         exit;
     }
 
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $row = $result->fetch_assoc();
 
     if (!$row) {
-        header("location: /POS/admin/read_accounts.php");
+        header("location: /ZDFinance/admin/read_accounts.php");
         exit;
     }
 
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
 
         $successMessage = "Account updated successfully!";
-        header("location: /POS/admin/read_accounts.php");
+        header("location: /ZDFinance/admin/read_accounts.php");
         exit;
     } while (false);
 }
@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
                 <div class="col-sm-3 d-grid">
-                    <a class="btn btn-outline-primary" href="/POS/admin/read_accounts.php" role="button">Cancel</a>
+                    <a class="btn btn-outline-primary" href="/ZDFinance/admin/read_accounts.php" role="button">Cancel</a>
                 </div>
             </div>
         </form>
