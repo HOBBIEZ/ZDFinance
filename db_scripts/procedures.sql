@@ -1,3 +1,6 @@
+DROP PROCEDURE IF EXISTS log_user_login;
+DROP PROCEDURE IF EXISTS log_user_logout;
+
 DELIMITER $$
 CREATE PROCEDURE log_user_login(IN user_id INT)
 BEGIN

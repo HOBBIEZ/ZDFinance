@@ -14,9 +14,17 @@ CREATE TRIGGER before_insert_cards
 BEFORE INSERT ON Cards
 FOR EACH ROW
 BEGIN
-    IF NEW.CVV IS NULL THEN
-        SET NEW.CVV = (SELECT IFNULL(MAX(CVV), -1) + 1 FROM Cards) % 1000;
+    DECLARE next_cvv INT DEFAULT 0;
+    IF (SELECT COUNT(*) FROM Cards) > 0 THEN
+        SELECT IFNULL(CVV, -1) + 1 INTO next_cvv 
+        FROM Cards
+        ORDER BY Creation_Date DESC
+        LIMIT 1;
     END IF;
+    IF next_cvv > 999 THEN
+        SET next_cvv = 0;
+    END IF;
+    SET NEW.CVV = next_cvv;
 END$$
 DELIMITER ;
 
@@ -97,6 +105,12 @@ CREATE TRIGGER after_internal_transaction
 AFTER INSERT ON Internal_Transactions
 FOR EACH ROW
 BEGIN
+    UPDATE Accounts
+    SET Balance = Balance + NEW.Amount
+    WHERE IBAN = NEW.To_IBAN;
+    UPDATE Accounts
+    SET Balance = Balance - NEW.Amount
+    WHERE IBAN = NEW.From_IBAN;
     INSERT INTO Audit_Logs (UserID, Type, Timestamp) VALUES (NEW.UserID, 'transaction', CURRENT_TIMESTAMP);
 END$$
 DELIMITER ;
@@ -108,6 +122,15 @@ CREATE TRIGGER after_external_transaction
 AFTER INSERT ON External_Transactions
 FOR EACH ROW
 BEGIN
+    IF NEW.Type = 'deposit' THEN
+        UPDATE Accounts
+        SET Balance = Balance + NEW.Amount
+        WHERE IBAN = NEW.IBAN;
+    ELSEIF NEW.Type = 'withdraw' THEN
+        UPDATE Accounts
+        SET Balance = Balance - NEW.Amount
+        WHERE IBAN = NEW.IBAN;
+    END IF;
     INSERT INTO Audit_Logs (UserID, Type, Timestamp) VALUES (NEW.UserID, 'transaction', CURRENT_TIMESTAMP);
 END$$
 DELIMITER ;
