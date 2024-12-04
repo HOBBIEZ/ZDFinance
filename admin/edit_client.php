@@ -21,6 +21,7 @@ $gender = "";
 $email = "";
 $phone_num = "";
 $address = "";
+$status = "";
 
 $errorMessage = "";
 $successMessage = "";
@@ -52,6 +53,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
     $email      =  $row["Email"];
     $phone_num  =  $row["Phone_Number"];
     $address    =  $row["Address"];
+    $status     =  $row["Status"];
 
 } else {
 
@@ -65,20 +67,21 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
     $email      =  $_POST["Email"];
     $phone_num  =  $_POST["Phone_Number"];
     $address    =  $_POST["Address"];
+    $status     =  $_POST["Status"];
 
     do {
 
         if ( empty($username)  || empty($password)  || empty($first_name) ||
              empty($last_name) || empty($dob)       || empty($gender)     ||
              empty($email)     || empty($phone_num) || empty($address)    ||
-             empty($UserID)
+             empty($UserID)    || empty($UserID)
         ) {
             $errorMessage = "all fields are required";
             break;
         }
 
         $sql = "UPDATE Users " .
-               "SET Username='$username', Password='$password', First_Name='$first_name', Last_Name='$last_name', Date_of_Birth='$dob', Gender='$gender', Email='$email', Address='$address', Phone_Number='$phone_num'" .
+               "SET Username='$username', Password='$password', First_Name='$first_name', Last_Name='$last_name', Date_of_Birth='$dob', Gender='$gender', Email='$email', Address='$address', Phone_Number='$phone_num', Status='$status'" .
                "WHERE UserID=$UserID";
 
         $result = $connection->query($sql);
@@ -121,6 +124,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
         ?>
 
         <form method="post">
+            <input type="hidden" name="UserID" value="<?php echo $UserID; ?>">
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Username</label>
                 <div class="col-sm-6">
@@ -179,6 +183,13 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
                     <textarea class="form-control" name="Address" required><?php echo $address; ?></textarea>
                 </div>
             </div>
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Status</label>
+                <div class="col-sm-6">
+                    <textarea class="form-control" name="Status" required><?php echo $status; ?></textarea>
+                </div>
+            </div>
+
 
             <?php
             if (!empty($successMessage)) {

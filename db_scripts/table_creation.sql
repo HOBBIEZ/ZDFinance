@@ -5,7 +5,6 @@ DROP TABLE IF EXISTS External_Transactions;
 DROP TABLE IF EXISTS Accounts;
 DROP TABLE IF EXISTS Users;
 
-
 CREATE TABLE Users (
     UserID INT AUTO_INCREMENT PRIMARY KEY, 
     Username VARCHAR(32) NOT NULL UNIQUE CHECK (Username REGEXP '^[a-zA-Z0-9_]{3,32}$'), 
@@ -17,9 +16,9 @@ CREATE TABLE Users (
     Gender ENUM('male', 'female') NOT NULL, 
     Email VARCHAR(64) NOT NULL UNIQUE CHECK (Email REGEXP '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'), 
     Phone_Number VARCHAR(15) NOT NULL UNIQUE CHECK (Phone_Number REGEXP '^\\+?[0-9]{7,15}$'), 
-    Address VARCHAR(255) NOT NULL
+    Address VARCHAR(255) NOT NULL,
+    Status Enum('active', 'inactive') NOT NULL
 );
-
 
 CREATE TABLE Accounts (
     IBAN BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -28,9 +27,8 @@ CREATE TABLE Accounts (
     Balance DECIMAL(15, 2) NOT NULL DEFAULT 0.00,
     Creation_Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Status ENUM('active', 'inactive', 'blocked') NOT NULL DEFAULT 'active',
-    FOREIGN KEY (UserID) REFERENCES Users(UserID) 
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
 ) AUTO_INCREMENT = 1000000000000000;
-
 
 CREATE TABLE External_Transactions (
 	TransactionID BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -42,7 +40,6 @@ CREATE TABLE External_Transactions (
     External_Account_Address VARCHAR(255) NOT NULL,
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
-
 
 CREATE TABLE Internal_Transactions (
 	TransactionID BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -58,7 +55,6 @@ CREATE TABLE Internal_Transactions (
     FOREIGN KEY (To_IBAN) REFERENCES Accounts(IBAN)
 );
 
-
 CREATE TABLE Cards (
     Card_Number BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     CVV INT,
@@ -73,7 +69,6 @@ CREATE TABLE Cards (
     FOREIGN KEY (UserId) REFERENCES Users(UserID),
     FOREIGN KEY (IBAN) REFERENCES Accounts(IBAN)
 ) AUTO_INCREMENT = 100000000;
-
 
 CREATE TABLE Audit_Logs (
     LogID BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,

@@ -1,10 +1,10 @@
-INSERT INTO Users (Username, Password, First_Name, Last_Name, Date_of_Birth, Gender, Email, Phone_Number, Address)
+INSERT INTO Users (Username, Password, First_Name, Last_Name, Date_of_Birth, Gender, Email, Phone_Number, Address, Status)
 VALUES
-('johndoe', 'hashed_password_1', 'John', 'Doe', '1990-01-01', 'male', 'johndoe@example.com', '+1234567890', '123 Elm Street'),
-('alicew', 'hashed_password_2', 'Alice', 'Williams', '1995-05-15', 'female', 'alicew@example.com', '+1234567891', '456 Oak Avenue'),
-('bwayne', 'hashed_password_3', 'Bruce', 'Wayne', '1985-11-10', 'male', 'bwayne@example.com', '+1234567892', '100 Gotham Way'),
-('clarkk', 'hashed_password_4', 'Clark', 'Kent', '1988-07-18', 'male', 'clarkk@example.com', '+1234567893', 'Metropolis Ave'),
-('diana', 'hashed_password_5', 'Diana', 'Prince', '1992-03-21', 'female', 'diana@example.com', '+1234567894', 'Amazon Street');
+('johndoe', 'hashed_password_1', 'John', 'Doe', '1990-01-01', 'male', 'johndoe@example.com', '+1234567890', '123 Elm Street', 'active'),
+('alicew', 'hashed_password_2', 'Alice', 'Williams', '1995-05-15', 'female', 'alicew@example.com', '+1234567891', '456 Oak Avenue', 'active'),
+('bwayne', 'hashed_password_3', 'Bruce', 'Wayne', '1985-11-10', 'male', 'bwayne@example.com', '+1234567892', '100 Gotham Way', 'active'),
+('clarkk', 'hashed_password_4', 'Clark', 'Kent', '1988-07-18', 'male', 'clarkk@example.com', '+1234567893', 'Metropolis Ave', 'deactive'),
+('diana', 'hashed_password_5', 'Diana', 'Prince', '1992-03-21', 'female', 'diana@example.com', '+1234567894', 'Amazon Street', 'active');
 
 
 INSERT INTO Accounts (UserID, Transfer_Limit, Balance, Status)

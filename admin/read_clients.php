@@ -42,7 +42,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <h1><a href="index.html">ZDFinance</a></h1>
         <h3>Admin WebPage (God mode)</h3>
@@ -68,6 +67,7 @@
                     <th>Phone Number</th>
                     <th>Address</th>
                     <th>Action</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -104,6 +104,7 @@
                         <td>$row[Email]</td>
                         <td>$row[Phone_Number]</td>
                         <td>$row[Address]</td>
+                        <td>$row[Status]</td>
                         <td>
                             <a class='btn btn-primary btn-sm' href='/POS/admin/edit_client.php?UserID=$row[UserID]'>Edit</a>
                             <a class='btn btn-danger btn-sm' href='/POS/admin/delete_client.php?UserID=$row[UserID]'>Delete</a>
