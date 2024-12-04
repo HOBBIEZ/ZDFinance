@@ -20,7 +20,7 @@ if ($conn->connect_error) {
 }
 
 // Query to get transaction type distribution
-$query = "SELECT type, COUNT(*) as count FROM transactions GROUP BY type";
+$query = "SELECT type, COUNT(*) as count FROM External_Transactions GROUP BY type";
 $result = $conn->query($query);
 
 $labels = [];
