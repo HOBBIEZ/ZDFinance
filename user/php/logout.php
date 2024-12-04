@@ -2,7 +2,7 @@
 session_start();
 
 
-$stmt = $conn->prepare("CALL $log_user_logout(?)");
+$stmt = $conn->prepare("CALL log_user_logout(?)");
 $stmt->bind_param('s', $_SESSION['user']);
 $stmt->execute();
 // Destroy the session

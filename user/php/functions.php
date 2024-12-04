@@ -39,7 +39,7 @@ function loginUser($username, $password) {
         $stmt->fetch();
 
         if (password_verify($password, $hashed_password)) {
-            $stmt = $conn->prepare("CALL $log_user_login(?)");
+            $stmt = $conn->prepare("CALL log_user_login(?)");
             $stmt->bind_param('s', $username);
             $stmt->execute();
             $response = ['success' => true];
