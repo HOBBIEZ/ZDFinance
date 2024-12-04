@@ -42,7 +42,17 @@ function loginUser($username, $password) {
             $stmt = $conn->prepare("CALL log_user_login(?)");
             $stmt->bind_param('s', $username);
             $stmt->execute();
-            $response = ['success' => true];
+            $stmt = $conn->prepare("SELECT Status FROM Users WHERE Username = ?");
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $stmt->store_result();
+            $stmt->bind_result($status);
+            $stmt->fetch();
+            if ($status === 'active') {
+                $response = ['success' => true];
+            } else {
+                $response = ['success' => false, 'error' => 'Invalid username or password.'];
+            }            
         } else {
             $response = ['success' => false, 'error' => 'Invalid username or password.'];
         }
