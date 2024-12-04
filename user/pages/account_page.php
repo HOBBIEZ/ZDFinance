@@ -228,14 +228,14 @@ if (!isset($_SESSION['user'])) {
       <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
               <div class="modal-header">
-                  <h5 class="modal-title" id="nfcModalLabel">NFC Transaction</h5>
+                  <h5 class="modal-title" id="nfcModalLabel">QR Code Scanner</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
               </div>
               <form id="cardSendForm">
-                <div class="modal-body d-flex justify-content-center align-items-center" style="height: 200px;">
-                    <img src="nfc.png" alt="NFC Icon" style="max-width: 100px; max-height: 100px;"> <!-- NFC Icon -->
-                    <p class="text-center fw-semibold fs-5 mt-3">Get close to Receiver's NFC.</p>
-                </div>
+                  <div class="modal-body d-flex flex-column justify-content-center align-items-center" style="height: 300px;">
+                      <video id="preview" style="width: 100%; max-height: 200px; border: 1px solid #ccc; border-radius: 5px;"></video>
+                      <p class="text-center fw-semibold fs-5 mt-3">Scan Receiver's QR code</p>
+                  </div>
               </form>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -244,6 +244,35 @@ if (!isset($_SESSION['user'])) {
       </div>
   </div>
 
+  <!-- Receive Modal -->
+  <div class="modal fade" id="receiveModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="amountModalLabel">Receive funds</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                  <div id="amountFormContainer">
+                      <form id="amountForm">
+                          <div class="mb-3">
+                              <label for="transactionAmount" class="form-label">Enter Amount</label>
+                              <input type="number" class="form-control" id="transactionAmount" placeholder="Enter amount" required min="10">
+                          </div>
+                          <button type="submit" class="btn btn-primary w-100">Generate QR Code</button>
+                      </form>
+                  </div>
+                  <div id="qrCodeContainer" class="text-center d-none">
+                      <canvas id="qrCanvas" class="mt-3"></canvas>
+                      <p class="mt-3">Sender should scan this QR code</p>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.location.href='account_page.php';">Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
 
   <!-- Footer -->
   <footer class="text-center py-3 bg-dark text-white">
@@ -252,6 +281,8 @@ if (!isset($_SESSION['user'])) {
 
   <!-- Bootstrap Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/@zxing/library@0.18.6/umd/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <script src="../js/account_scripts.js"></script>
 </body>
 </html>

@@ -19,35 +19,34 @@
         function startScanner() {
             // List available video input devices (cameras)
             codeReader.listVideoInputDevices()
-                .then(videoInputDevices => {
-                    if (videoInputDevices.length > 0) {
-                        // We can explicitly choose the rear camera for mobile devices
-                        let selectedDeviceId;
-                        if (videoInputDevices.length === 1) {
-                            // Only one camera, use it
-                            selectedDeviceId = videoInputDevices[0].deviceId;
-                        } else {
-                            // Select rear camera by preference
-                            selectedDeviceId = videoInputDevices.find(device => device.label.includes("back") || device.label.includes("rear"))?.deviceId || videoInputDevices[0].deviceId;
-                        }
-
-                        // Start decoding QR code from the selected camera
-                        codeReader.decodeFromVideoDevice(selectedDeviceId, 'preview', (result, error) => {
-                            if (result) {
-                                // Display the scanned text
-                                document.getElementById('result').innerText = `Scanned text: ${result.text}`;
-                            }
-                            if (error) {
-                                console.error(error);
-                            }
-                        });
+            .then(videoInputDevices => {
+                if (videoInputDevices.length > 0) {
+                    // We can explicitly choose the rear camera for mobile devices
+                    let selectedDeviceId;
+                    if (videoInputDevices.length === 1) {
+                        // Only one camera, use it
+                        selectedDeviceId = videoInputDevices[0].deviceId;
                     } else {
-                        alert('No video input devices found');
+                        // Select rear camera by preference
+                        selectedDeviceId = videoInputDevices.find(device => device.label.includes("back") || device.label.includes("rear"))?.deviceId || videoInputDevices[0].deviceId;
                     }
-                })
-                .catch(err => {
-                    console.error('Error accessing video input devices:', err);
-                });
+
+                    // Start decoding QR code from the selected camera
+                    codeReader.decodeFromVideoDevice(selectedDeviceId, 'preview', (result, error) => {
+                        if (result) {
+                            //redirect to php code
+                        }
+                        if (error) {
+                            console.error(error);
+                        }
+                    });
+                } else {
+                    alert('No video input devices found');
+                }
+            })
+            .catch(err => {
+                console.error('Error accessing video input devices:', err);
+            });
         }
 
         // Start the scanner when the page loads

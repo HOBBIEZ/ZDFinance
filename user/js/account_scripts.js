@@ -1,3 +1,4 @@
+const codeReader = new ZXing.BrowserQRCodeReader();
 document.addEventListener("DOMContentLoaded", function () {
     // Check if the user is already logged in
     fetch("../php/index.php", {
@@ -184,24 +185,39 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('nfcModal').addEventListener('shown.bs.modal', function (e) {
         e.preventDefault();
         const iban = document.getElementById('nfcModal').dataset.iban;
-        console.log(iban);
-        // fetch('../php/nfc.php', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/x-www-form-urlencoded'
-        //     },
-        //     body: `iban=${iban}&amount=${transaction_amount}&receivers_iban=${receivers_iban}&transaction_description=${transaction_description}`
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //     if (data.success) {
-        //         window.location.href = "../pages/account_page.php";
-        //     } else {
-        //         alert(data.error);
-        //     }
-        // })
-        // .catch(error => console.error('Error:', error));
+        startScanner(iban);
     });
+
+    document.getElementById('amountForm').addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent page reload
+        const amount = document.getElementById('transactionAmount').value;
+        const iban = document.getElementById('receiveModal').dataset.iban;
+
+        // Create JSON data for QR code
+        const qrData = JSON.stringify({ amount, iban });
+
+        // Generate the QR code
+        QRCode.toCanvas(qrCanvas, qrData, { width: 200 }, (error) => {
+            if (error) {
+                console.error('Error generating QR code:', error);
+                alert('Failed to generate QR code.');
+            } else {
+                // Hide the form and show the QR code
+                amountFormContainer.classList.add('d-none');
+                qrCodeContainer.classList.remove('d-none');
+            }
+        });
+    });
+
+    document.getElementById('nfcModal').addEventListener('hidden.bs.modal', function (e) {
+        codeReader.reset();
+    });
+
+    document.getElementById('receiveModal').addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget; // Button that triggered the modal
+        var iban = button.getAttribute('data-iban'); // Extract IBAN
+        this.setAttribute('data-iban', iban);
+    });   
 
     document.getElementById('transactionModal').addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget; // Button that triggered the modal
@@ -260,6 +276,62 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+function startScanner(iban) {
+    // List available video input devices (cameras)
+    codeReader.listVideoInputDevices()
+    .then(videoInputDevices => {
+        if (videoInputDevices.length > 0) {
+            // We can explicitly choose the rear camera for mobile devices
+            let selectedDeviceId;
+            if (videoInputDevices.length === 1) {
+                // Only one camera, use it
+                selectedDeviceId = videoInputDevices[0].deviceId;
+            } else {
+                // Select rear camera by preference
+                selectedDeviceId = videoInputDevices.find(device => device.label.includes("back") || device.label.includes("rear"))?.deviceId || videoInputDevices[0].deviceId;
+            }
+
+            // Start decoding QR code from the selected camera
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'preview', (result, error) => {
+                if (result) {
+                    try {
+                        const qrData = JSON.parse(result.text);
+                        amount = qrData.amount;
+                        receiversIBAN = qrData.iban;
+                        transaction_description = '';
+
+                        codeReader.reset();
+                    } catch (parseError) {
+                        console.error('Error parsing QR code data:', parseError);
+                    }
+
+                    fetch('../php/internal_transaction.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `iban=${iban}&amount=${amount}&receivers_iban=${receiversIBAN}&transaction_description=${transaction_description}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = "../pages/account_page.php";
+                        } else {
+                            alert(data.error);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+            });
+        } else {
+            alert('No video input devices found');
+        }
+    })
+    .catch(err => {
+        console.error('Error accessing video input devices:', err);
+    });
+}
 
 function fetchTransactions() {
     fetch('../php/fetch_transactions.php')
@@ -398,6 +470,7 @@ function renderAccount(account) {
                     <button class="btn btn-outline-success btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#depositModal" data-iban="${account.IBAN}" class="deposit-btn">Deposit</button>
                     <button class="btn btn-outline-danger btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#withdrwalModal" data-iban="${account.IBAN}" class="withdraw-btn">Withdraw</button>
                     <button class="btn btn-outline-secondary btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#transactionModal" data-iban="${account.IBAN}" class="transaction-btn">Transaction</button>
+                    <button class="btn btn-outline-secondary btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#receiveModal" data-iban="${account.IBAN}" class="transaction-btn">Receive</button>
                 </div>
                 <button class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 delete-account" data-account-iban="${account.IBAN}">
                     <i class="bi bi-trash"></i>
