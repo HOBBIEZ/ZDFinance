@@ -15,7 +15,7 @@ if ( isset($_GET["UserID"]) ) {
         die("Connection failed: " . $connection->connect_error);
     }
 
-    $sql = "DELETE FROM Users WHERE UserID=$UserID";
+    $sql = "UPDATE Users SET Status='deleted' WHERE UserID='$UserID'";
     $connection->query($sql);
 }
 

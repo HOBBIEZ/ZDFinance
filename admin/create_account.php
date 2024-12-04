@@ -13,6 +13,7 @@ if ($connection->connect_error) {
 
 $UserID = "";
 $tranfer_limit = "";
+$status = "";
 
 $errorMessage = "";
 $successMessage = "";
@@ -20,15 +21,16 @@ $successMessage = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $UserID = $_POST["UserID"];
     $tranfer_limit = $_POST["Transfer_Limit"];
+    $status = $_POST["Status"];
 
     do {
-        if (empty($UserID) || empty($tranfer_limit)) {
+        if (empty($UserID) || empty($tranfer_limit) || empty($status)) {
             $errorMessage = "All fields are required";
             break;
         }
 
-        $sql = "INSERT INTO Accounts (UserID, Transfer_Limit)
-                VALUES ('$UserID', '$tranfer_limit')";
+        $sql = "INSERT INTO Accounts (UserID, Transfer_Limit, Status)
+                VALUES ('$UserID', '$tranfer_limit', '$status')";
         $result = $connection->query($sql);
 
         if (!$result) {
@@ -38,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $UserID = "";
         $tranfer_limit = "";
+        $status = "";
 
         $successMessage = "Account added successfully!";
 
@@ -83,6 +86,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label class="col-sm-3 col-form-label">Transfer Limit</label>
                 <div class="col-sm-6">
                     <input type="number" class="form-control" name="Transfer_Limit" value="<?php echo $tranfer_limit; ?>" min="0">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Status</label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="Status" required>
+                        <option value="">Select Status</option>
+                        <option value="active" <?php echo $status == 'active' ? 'selected' : ''; ?>>active</option>
+                        <option value="inactive" <?php echo $status == 'inactive' ? 'selected' : ''; ?>>inactive</option>
+                    </select>
                 </div>
             </div>
 

@@ -186,7 +186,11 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Status</label>
                 <div class="col-sm-6">
-                    <textarea class="form-control" name="Status" required><?php echo $status; ?></textarea>
+                    <select class="form-control" name="Status" required>
+                        <option value="">Select Status</option>
+                        <option value="active" <?php echo $status == 'active' ? 'selected' : ''; ?>>active</option>
+                        <option value="deleted" <?php echo $status == 'deleted' ? 'selected' : ''; ?>>deleted</option>
+                    </select>
                 </div>
             </div>
 

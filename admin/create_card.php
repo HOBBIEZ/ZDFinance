@@ -136,6 +136,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="date" class="form-control" name="Expiration_Date" value="<?= $Expiration_Date; ?>" required>
                 </div>
             </div>
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Status</label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="Status" required>
+                        <option value="">Select Status</option>
+                        <option value="active" <?php echo $Status == 'active' ? 'selected' : ''; ?>>active</option>
+                        <option value="inactive" <?php echo $Status == 'inactive' ? 'selected' : ''; ?>>inactive</option>
+                    </select>
+                </div>
+            </div>
 
             <?php if (!empty($successMessage)) : ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">

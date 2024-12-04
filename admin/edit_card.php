@@ -61,9 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             break;
         }
 
-        $sql = "UPDATE Cards " .
-               "SET Card_Number='$Card_Number', CVV='$CVV', Pin='$PIN', Purchase_Limit='$Purchase_Limit', Status='$Status', Expiration_Date='$Expiration_Date'" .
-               "WHERE Card_Number='$Card_Number'";
+        $Original_Card_Number = isset($_POST["Original_Card_Number"]) ? $_POST["Original_Card_Number"] : '';
+
+        $sql = "UPDATE Cards 
+                SET Card_Number='$Card_Number', CVV='$CVV', Pin='$PIN', Purchase_Limit='$Purchase_Limit', Status='$Status', Expiration_Date='$Expiration_Date' 
+                WHERE Card_Number='$Original_Card_Number'";
+
 
         $result = $connection->query($sql);
 
@@ -102,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <?php endif; ?>
 
         <form method="post">
+            <input type="hidden" name="Original_Card_Number" value="<?= $Card_Number; ?>">
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Card Number</label>
                 <div class="col-sm-6">
@@ -130,6 +134,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 <label class="col-sm-3 col-form-label">Expiration Date</label>
                 <div class="col-sm-6">
                     <input type="date" class="form-control" name="Expiration_Date" value="<?= $Expiration_Date; ?>" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Status</label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="Status" required>
+                        <option value="">Select Status</option>
+                        <option value="active" <?php echo $Status == 'active' ? 'selected' : ''; ?>>Active</option>
+                        <option value="inactive" <?php echo $Status == 'inactive' ? 'selected' : ''; ?>>Inactive</option>
+                    </select>
                 </div>
             </div>
 

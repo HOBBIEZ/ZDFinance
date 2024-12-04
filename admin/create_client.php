@@ -20,6 +20,7 @@ $gender = "";
 $email = "";
 $phone_num = "";
 $address = "";
+$status = "";
 
 $errorMessage = "";
 $successMessage = "";
@@ -34,18 +35,20 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
     $email       =  $_POST["Email"];
     $phone_num   =  $_POST["Phone_Number"];
     $address     =  $_POST["Address"];
+    $status      =  $_POST["Status"];
 
     do {
         if ( empty($username)  || empty($password)  || empty($first_name) ||
              empty($last_name) || empty($dob)       || empty($gender)     ||
-             empty($email)     || empty($phone_num) || empty($address)
+             empty($email)     || empty($phone_num) || empty($address)    ||
+             empty($status)
         ) {
             $errorMessage = "all fields are required";
             break;
         }
 
-        $sql = "INSERT INTO Users (Username, Password, First_Name, Last_Name, Date_of_Birth, Gender, Email, Phone_Number, Address)
-                VALUES ('$username', '$password', '$first_name', '$last_name', '$dob', '$gender', '$email', '$phone_num', '$address')";
+        $sql = "INSERT INTO Users (Username, Password, First_Name, Last_Name, Date_of_Birth, Gender, Email, Phone_Number, Address, Status)
+                VALUES ('$username', '$password', '$first_name', '$last_name', '$dob', '$gender', '$email', '$phone_num', '$address', '$status')";
         $result = $connection->query($sql);
 
         if (!$result) {
@@ -61,6 +64,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
         $email = "";
         $phone_num = "";
         $address = "";
+        $status = "";
 
         $successMessage = "Client added succesfully!";
 
@@ -152,6 +156,16 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
                 <label class="col-sm-3 col-form-label">Address</label>
                 <div class="col-sm-6">
                     <textarea class="form-control" name="Address" required><?php echo $address; ?></textarea>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Status</label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="Status" required>
+                        <option value="">Select Status</option>
+                        <option value="active" <?php echo $status == 'active' ? 'selected' : ''; ?>>active</option>
+                        <option value="deleted" <?php echo $status == 'deleted' ? 'selected' : ''; ?>>deleted</option>
+                    </select>
                 </div>
             </div>
 

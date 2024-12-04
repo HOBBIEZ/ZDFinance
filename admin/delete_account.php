@@ -15,7 +15,7 @@ if ( isset($_GET["IBAN"]) ) {
         die("Connection failed: " . $connection->connect_error);
     }
 
-    $sql = "DELETE FROM Accounts WHERE IBAN=$IBAN";
+    $sql = "UPDATE Accounts SET Status='inactive' WHERE IBAN='$IBAN'";
     $connection->query($sql);
 }
 

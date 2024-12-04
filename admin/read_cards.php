@@ -42,7 +42,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <h1><a href="index.html">ZDFinance</a></h1>
         <h3>Admin WebPage (God mode)</h3>

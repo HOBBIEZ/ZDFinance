@@ -12,6 +12,7 @@ if ($connection->connect_error) {
 }
 
 $transfer_limit  =  "";
+$status = "";
 
 $errorMessage   = "";
 $successMessage = "";
@@ -34,18 +35,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     $transfer_limit = $row["Transfer_Limit"];
+    $status = $row["Status"];
 } else {
     $IBAN = isset($_POST["IBAN"]) ? $_POST["IBAN"] : '';
     $transfer_limit = isset($_POST["Transfer_Limit"]) ? $_POST["Transfer_Limit"] : '';
+    $status = isset($_POST["Status"]) ? $_POST["Status"] : '';
 
     do {
-        if (empty($transfer_limit) || empty($IBAN)) {
+        if (empty($transfer_limit) || empty($status) || empty($IBAN)) {
             $errorMessage = "All fields are required";
             break;
         }
 
         $sql = "UPDATE Accounts " .
-               "SET Transfer_Limit='$transfer_limit'" .
+               "SET Transfer_Limit='$transfer_limit', Status='$status'" .
                "WHERE IBAN=$IBAN";
 
         $result = $connection->query($sql);
@@ -93,6 +96,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 <label class="col-sm-3 col-form-label">Transfer Limit</label>
                 <div class="col-sm-6">
                     <input type="number" class="form-control" name="Transfer_Limit" value="<?php echo $tranfer_limit; ?>" min="0">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Status</label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="Status" required>
+                        <option value="">Select Status</option>
+                        <option value="active" <?php echo $status == 'active' ? 'selected' : ''; ?>>active</option>
+                        <option value="inactive" <?php echo $status == 'inactive' ? 'selected' : ''; ?>>inactive</option>
+                    </select>
                 </div>
             </div>
 

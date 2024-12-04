@@ -42,13 +42,11 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <h1><a href="index.html">ZDFinance</a></h1>
         <h3>Admin WebPage (God mode)</h3>
     </div>
 
-    <!-- Content -->
     <div class="container my-5">
         <h2>List of Audit Logs</h2>
         <br>
