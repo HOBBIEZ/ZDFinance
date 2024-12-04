@@ -99,7 +99,7 @@ function forgotPassword($email) {
             }
         }
 
-        $resetLink = "http://$ipv4Address/ZDFinance/Final/pages/reset_password.php?token=$token";
+        $resetLink = "http://$ipv4Address/ZDFinance/user/pages/reset_password.php?token=$token";
         $message = "Dear $username,\n\nFollow this link to reset your password:\n$resetLink\n\nThis link will expire in 1 hour.";
 
         $subject = "Reset password";
