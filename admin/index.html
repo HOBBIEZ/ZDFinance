@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Home - ZDFinance</title>
+    <title>Admin Dashboard - ZDFinance</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -74,12 +74,18 @@
 
         .chart-container {
             margin-top: 50px;
+            text-align: center;
         }
 
         canvas {
             max-width: 100%;
             height: 400px;
             margin: auto;
+        }
+
+        .loading-text {
+            color: #888;
+            font-style: italic;
         }
     </style>
 </head>
@@ -103,76 +109,88 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Charts Section -->
+        <h2>Admin Dashboard</h2>
         <div class="chart-container">
-            <h4>Gender Distribution of Users</h4>
-            <canvas id="genderChart"></canvas>
+            <h3>Users Status Distribution</h3>
+            <canvas id="usersChart"></canvas>
         </div>
+
         <div class="chart-container">
-            <h4>Account Status</h4>
-            <canvas id="accountChart"></canvas>
+            <h3>Account Balances Distribution</h3>
+            <canvas id="accountsChart"></canvas>
         </div>
+
         <div class="chart-container">
-            <h4>Transaction Types</h4>
-            <canvas id="transactionChart"></canvas>
+            <h3>Transaction Types</h3>
+            <canvas id="transactionsChart"></canvas>
         </div>
     </div>
 
-    <!-- JavaScript to Fetch Data and Render Charts -->
     <script>
-        // Function to create a chart
-        function createChart(ctx, type, data, options) {
-            new Chart(ctx, {
-                type: type,
-                data: data,
-                options: options
-            });
-        }
+        // Dummy data for charts - Replace these with actual data from your database via AJAX or server-side rendering
+        const usersData = {
+            labels: ['Active', 'Deleted'],
+            datasets: [{
+                data: [75, 25], // Replace with database data
+                backgroundColor: ['#007bff', '#dc3545'],
+            }]
+        };
 
-        // Fetch and render Gender Chart
-        fetch('fetch_gender_stats.php')
-            .then(response => response.json())
-            .then(data => {
-                const ctx = document.getElementById('genderChart').getContext('2d');
-                createChart(ctx, 'pie', {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'Gender Distribution',
-                        data: data.values,
-                        backgroundColor: ['#007bff', '#ff6384']
-                    }]
-                });
-            });
+        const accountsData = {
+            labels: ['Below $10,000', '$10,000 - $50,000', 'Above $50,000'],
+            datasets: [{
+                data: [50, 30, 20], // Replace with database data
+                backgroundColor: ['#007bff', '#ffc107', '#28a745'],
+            }]
+        };
 
-        // Fetch and render Account Status Chart
-        fetch('fetch_account_stats.php')
-            .then(response => response.json())
-            .then(data => {
-                const ctx = document.getElementById('accountChart').getContext('2d');
-                createChart(ctx, 'doughnut', {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'Account Status',
-                        data: data.values,
-                        backgroundColor: ['#28a745', '#dc3545']
-                    }]
-                });
-            });
+        const transactionsData = {
+            labels: ['Withdraw', 'Deposit'],
+            datasets: [{
+                data: [40, 60], // Replace with database data
+                backgroundColor: ['#17a2b8', '#28a745'],
+            }]
+        };
 
-        // Fetch and render Transaction Types Chart
-        fetch('fetch_transaction_stats.php')
-            .then(response => response.json())
-            .then(data => {
-                const ctx = document.getElementById('transactionChart').getContext('2d');
-                createChart(ctx, 'bar', {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'Transaction Types',
-                        data: data.values,
-                        backgroundColor: ['#ffc107', '#17a2b8']
-                    }]
-                });
-            });
+        // Initialize Users Chart
+        const usersChartCtx = document.getElementById('usersChart').getContext('2d');
+        new Chart(usersChartCtx, {
+            type: 'pie',
+            data: usersData,
+        });
+
+        // Initialize Accounts Chart
+        const accountsChartCtx = document.getElementById('accountsChart').getContext('2d');
+        new Chart(accountsChartCtx, {
+            type: 'bar',
+            data: {
+                labels: accountsData.labels,
+                datasets: [{
+                    label: 'Number of Accounts',
+                    data: accountsData.datasets[0].data,
+                    backgroundColor: accountsData.datasets[0].backgroundColor,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Account Balances'
+                    }
+                }
+            }
+        });
+
+        // Initialize Transactions Chart
+        const transactionsChartCtx = document.getElementById('transactionsChart').getContext('2d');
+        new Chart(transactionsChartCtx, {
+            type: 'doughnut',
+            data: transactionsData,
+        });
     </script>
 </body>
 </html>
