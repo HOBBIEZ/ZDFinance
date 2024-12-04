@@ -1,5 +1,18 @@
 <?php
-require_once 'db_connection.php';
+
+// Database connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "pos_db";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die(json_encode(['error' => $conn->connect_error]));
+}
 
 // Fetch Users Status Distribution
 $users_status_query = "SELECT Status AS label, COUNT(*) AS count FROM Users GROUP BY Status";
