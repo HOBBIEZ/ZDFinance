@@ -33,7 +33,37 @@ The following images show visually the database architecture in the form of an E
 
 ![DB_ERD](./presentation_images/ERD.png)
 
+- **Entities**: Represented by blue rectangles.  
+- **Attributes**: Represented by green ellipses.  
+- **Relationships**: Represented by orange diamonds.  
+
+- All **Users** share the same attributes, some of which are composite.  
+- A **User** can have multiple **Accounts** in a **1:N partial-to-total relationship**, as opening an account is optional.  
+- The same relationship applies between **Accounts** and **Cards**, as well as between **Users** and **Transactions** (internal and external).  
+- A **1:N total-to-total relationship** exists between **Users** and **Audit logs**.
+
 ![DB_RD](./presentation_images/RD.png)
+
+- **Tables**: Represented by groups of rectangles.  
+- **Primary Keys**: Represented by underlined data within a table.  
+- **Foreign Keys**: Represented by arrows pointing from one piece of data to another.  
+
+### Normalization and Database Design  
+After creating the relational schema, normalization is required to ensure efficient database functionality. Normalization applies design rules to prevent **data redundancy** and **update anomalies** before implementation.  
+
+#### Third Normal Form (3NF)  
+3NF is a normalization level following 1NF and 2NF. The conditions for 3NF are:  
+1. **1NF**:  
+   - No duplicate records.  
+   - No multivalued data in a single cell.  
+   - No data that can be further decomposed into smaller cells.  
+2. **2NF**:  
+   - Must already be in 1NF.  
+   - No partial dependencies (dependencies on part of a composite primary key).  
+3. **No Transitive Dependencies**:  
+   - All fields must depend only on the primary key.  
+
+
 
 ## The Codebase
 

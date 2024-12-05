@@ -69,7 +69,7 @@
                 $servername = "localhost";
                 $username = "root";
                 $password = "";
-                $database = "pos_db";
+                $database = "zdfinance";
 
                 $connection = new mysqli($servername, $username, $password, $database);
 

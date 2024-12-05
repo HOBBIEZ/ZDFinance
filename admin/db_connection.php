@@ -2,7 +2,7 @@
 
 $user = 'root';
 $password = '';
-$db = 'pos_db';
+$db = 'zdfinance';
 
 $db = new mysqli('localhost', $user, $password, $db) or die("Unable to connect");
 
