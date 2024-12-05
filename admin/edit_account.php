@@ -1,5 +1,4 @@
 <?php
-
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -14,7 +13,7 @@ if ($connection->connect_error) {
 $account_name = "";
 $status = "";
 
-$errorMessage   = "";
+$errorMessage = "";
 $successMessage = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -25,8 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $IBAN = $_GET["IBAN"];
 
-    $sql = "SELECT * FROM Accounts WHERE IBAN=$IBAN";
-    $result = $connection->query($sql);
+    // Use prepared statements for security
+    $stmt = $connection->prepare("SELECT * FROM Accounts WHERE IBAN = ?");
+    $stmt->bind_param("s", $IBAN);
+    $stmt->execute();
+    $result = $stmt->get_result();
     $row = $result->fetch_assoc();
 
     if (!$row) {
@@ -36,29 +38,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $account_name = $row["Account_Name"];
     $status = $row["Status"];
-} else {
+    $stmt->close();
+} else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $IBAN = isset($_POST["IBAN"]) ? $_POST["IBAN"] : '';
-    $account_name = isset($_POST["Account_name"]) ? $_POST["Account_Name"] : '';
+    $account_name = isset($_POST["Account_Name"]) ? $_POST["Account_Name"] : '';
     $status = isset($_POST["Status"]) ? $_POST["Status"] : '';
 
     do {
-        if (empty($account_name) || empty($status) || empty($IBAN)) {
+        if (empty($IBAN) || empty($account_name) || empty($status)) {
             $errorMessage = "All fields are required";
             break;
         }
 
-        $sql = "UPDATE Accounts " .
-               "SET Account_Name='$account_name', Status='$status'" .
-               "WHERE IBAN=$IBAN";
+        // Use prepared statements for security
+        $stmt = $connection->prepare("UPDATE Accounts SET Account_Name = ?, Status = ? WHERE IBAN = ?");
+        $stmt->bind_param("sss", $account_name, $status, $IBAN);
 
-        $result = $connection->query($sql);
-
-        if (!$result) {
-            $errorMessage = "Invalid query: " . $connection->error;
+        if (!$stmt->execute()) {
+            $errorMessage = "Invalid query: " . $stmt->error;
             break;
         }
 
         $successMessage = "Account updated successfully!";
+        $stmt->close();
+
         header("location: /ZDFinance/admin/read_accounts.php");
         exit;
     } while (false);
@@ -71,9 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Client</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <title>Edit Account</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <div class="container my-5">
@@ -81,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <br><br>
 
         <?php
-        if ( !empty($errorMessage) ) {
+        if (!empty($errorMessage)) {
             echo "
             <div class='alert alert-warning alert-dismissible fade show' role='alert'>
                 <strong>$errorMessage</strong>
@@ -92,11 +95,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         ?>
 
         <form method="post">
-            <input type="hidden" name="IBAN" value="<?php echo $IBAN; ?>">
+            <input type="hidden" name="IBAN" value="<?php echo htmlspecialchars($IBAN); ?>">
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Account Name</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Account_Name" value="<?php echo $account_name; ?>" required>
+                    <input type="text" class="form-control" name="Account_Name" value="<?php echo htmlspecialchars($account_name); ?>" required>
                 </div>
             </div>
             <div class="row mb-3">
@@ -111,13 +114,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             </div>
 
             <?php
-            if ( !empty($successMessage) ) {
+            if (!empty($successMessage)) {
                 echo "
-                <div class='row mb-3'>
-                    <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-                        <strong>$successMessage</strong>
-                        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-                    </div>
+                <div class='alert alert-success alert-dismissible fade show' role='alert'>
+                    <strong>$successMessage</strong>
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
                 </div>
                 ";
             }
@@ -132,6 +133,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 </div>
             </div>
         </form>
-    </div>    
+    </div>
 </body>
 </html>
