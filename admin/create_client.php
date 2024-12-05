@@ -2,6 +2,7 @@
 
 $servername = "localhost";
 $username = "root";
+$password = "";
 $database = "pos_db";
 
 $connection = new mysqli($servername, $username, $password, $database);
