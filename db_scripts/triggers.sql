@@ -16,7 +16,7 @@ FOR EACH ROW
 BEGIN
     DECLARE next_cvv INT DEFAULT 0;
     IF (SELECT COUNT(*) FROM Cards) > 0 THEN
-        SELECT IFNULL(CVV, -1) + 1 INTO next_cvv 
+        SELECT IFNULL(MAX(CVV), -1) + 1 INTO next_cvv 
         FROM Cards
         ORDER BY Creation_Date DESC
         LIMIT 1;
