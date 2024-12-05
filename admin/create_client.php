@@ -12,6 +12,7 @@ if ($connection->connect_error) {
 }
 
 $username = "";
+$password = "";
 $first_name = "";
 $last_name = "";
 $dob = "";
@@ -26,7 +27,7 @@ $successMessage = "";
 
 if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
     $username    =  $_POST["Username"];
-    $password    =  $_POST["Password"];
+    $password    =  password_hash($_POST["Password"], PASSWORD_BCRYPT);
     $first_name  =  $_POST["First_Name"];
     $last_name   =  $_POST["Last_Name"];
     $dob         =  $_POST["Date_of_Birth"];
@@ -39,15 +40,16 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
     do {
         if ( empty($username)  || empty($first_name) || empty($status)   ||
              empty($last_name) || empty($dob)        || empty($gender)   ||
-             empty($email)     || empty($phone_num)  || empty($address) 
+             empty($email)     || empty($phone_num)  || empty($address)  ||
+             empty($password)
              
         ) {
             $errorMessage = "all fields are required";
             break;
         }
 
-        $sql = "INSERT INTO Users (Username, First_Name, Last_Name, Date_of_Birth, Gender, Email, Phone_Number, Address, Status)
-                VALUES ('$username', '$first_name', '$last_name', '$dob', '$gender', '$email', '$phone_num', '$address', '$status')";
+        $sql = "INSERT INTO Users (Username, Password,  First_Name, Last_Name, Date_of_Birth, Gender, Email, Phone_Number, Address, Status)
+                VALUES ('$username', R'$first_name', '$last_name', '$dob', '$gender', '$email', '$phone_num', '$address', '$status')";
         $result = $connection->query($sql);
 
         if (!$result) {
@@ -55,6 +57,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
         }
 
         $username = "";
+        $password = "";
         $first_name = "";
         $last_name = "";
         $dob = "";
@@ -106,6 +109,12 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
                 </div>
             </div>
             <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Password</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="Password" value="<?php echo $password; ?>" required>
+                </div>
+            </div>
+            <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">First Name</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control" name="First_Name" value="<?php echo $first_name; ?>" required>
@@ -148,7 +157,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Address</label>
                 <div class="col-sm-6">
-                    <textarea class="form-control" name="Address" required><?php echo $address; ?></textarea>
+                    <input type="text" class="form-control" name="Address" required><?php echo $address; ?></textarea>
                 </div>
             </div>
             <div class="row mb-3">
