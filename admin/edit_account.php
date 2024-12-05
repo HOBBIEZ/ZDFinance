@@ -11,7 +11,7 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
-$account_name  =  "";
+$account_name = "";
 $status = "";
 
 $errorMessage   = "";
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Account Name</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="Account_Name" value="<?php echo $tranfer_limit; ?>" required>
+                    <input type="text" class="form-control" name="Account_Name" value="<?php echo $account_name; ?>" required>
                 </div>
             </div>
             <div class="row mb-3">
