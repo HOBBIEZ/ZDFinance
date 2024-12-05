@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $sql = "INSERT INTO Cards (UserID, IBAN, PIN, Expiration_Date)
-                VALUES ('$UserID', '$IBAN', '$PIN' '$Expiration_Date')";
+                VALUES ('$UserID', '$IBAN', '$PIN', '$Expiration_Date')";
         $result = $connection->query($sql);
 
         if (!$result) {
