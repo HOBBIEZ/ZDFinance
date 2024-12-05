@@ -21,6 +21,11 @@
             color: white;
             text-decoration: none;
         }
+        .container-centered {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
         .btn-container {
             display: flex;
             flex-direction: column;
@@ -47,10 +52,10 @@
         <h3>Admin WebPage (God mode)</h3>
     </div>
 
-    <div class="container my-5">
+    <div class="container my-5 container-centered">
         <h2>List of Audit Logs</h2>
         <br>
-        <table class="table">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>LogID</th>
