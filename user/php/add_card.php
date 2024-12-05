@@ -4,7 +4,6 @@ include('db_connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $iban = $_POST['iban'];
-    error_log(print_r($iban, true));
     $pin = $_POST['pin'];
     $username = $_SESSION['user'];  // Assuming session is used to track user
     // Prepare SQL statement to fetch the UserID
@@ -14,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute();
     $result = $stmt->get_result();
     $UserID = $result->fetch_assoc()['UserID'];
-    error_log(print_r($iban, true));
 
     // Ensure IBAN belongs to the current user
     $sql = "SELECT * FROM Accounts WHERE IBAN = ? AND UserID = ?";

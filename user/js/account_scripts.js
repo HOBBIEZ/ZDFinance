@@ -22,9 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("settingsForm").addEventListener('submit', function(e) {
         e.preventDefault();
         const formData = new FormData(this);
-        formData.forEach((value, key) => {
-            console.log(key, value);
-        });
         formData.append("action", "update_user");
 
         fetch('../php/index.php', {
@@ -46,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error('Error updating user data:', error));
     });
 
+    // Handle form submission to open new Account
     document.getElementById("newAccountForm").addEventListener('submit', function(e) {
         e.preventDefault();
         const accountError = document.getElementById("accountError");
@@ -68,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch((error) => console.error("Error:", error));
     });
 
-    // Handle adding a card to an account
+    // Handle adding a card to an Account
     document.getElementById('addCardForm').addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -435,7 +433,6 @@ function fetchAccounts() {
 }
 
 // Helper function to render account and its associated cards
-// Modify the renderAccount function to add deposit and withdraw buttons
 function renderAccount(account) {
     let cardsHTML = '';
     if (account.Cards && account.Cards.length > 0) {

@@ -10,7 +10,6 @@ if ($_POST['iban'] === $_POST['receivers_iban']) {
     return;
 }
 
-
 $stmt = $conn->prepare("SELECT * FROM Accounts WHERE IBAN = ?");
 $stmt->bind_param("s", $_POST['receivers_iban']);
 $stmt->execute();
@@ -34,8 +33,6 @@ $stmt->bind_param("s", $_POST['iban']);
 $stmt->execute();
 $result = $stmt->get_result();
 $balance = $result->fetch_assoc()['Balance'];
-
-error_log((float)$balance - (float)$_POST['amount']);
 
 if ((float)$balance - (float)$_POST['amount'] < 0) {
     echo json_encode(['success' => false, 'error' => 'Your balance is insufficient.']);

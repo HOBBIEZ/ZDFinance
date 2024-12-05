@@ -1,3 +1,4 @@
+<!-- Check if user is on session, else load boot page -->
 <?php
 include('../php/db_connection.php');
 session_start();

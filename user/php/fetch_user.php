@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('db_connection.php');  // Include your DB connection script
+include('db_connection.php');  // Include DB connection script
 
 $username = $_SESSION['user'];
 

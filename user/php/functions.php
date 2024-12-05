@@ -1,5 +1,4 @@
 <?php
-// functions.php - Business logic
 
 include('db_connection.php');
 require '../vendor/autoload.php';
@@ -134,13 +133,13 @@ function sendMail($receiver, $username, $message, $subject) {
         $mail->isSMTP();  // Set mailer to use SMTP
         $mail->Host = 'smtp.gmail.com';  // Gmail SMTP server
         $mail->SMTPAuth = true;  // Enable SMTP authentication
-        $mail->Username = 'stefanoszks@gmail.com';  // Your Gmail address
-        $mail->Password = 'qbflsflvrfxwxxmh';  // Your Gmail App Password (use App Password if 2FA is enabled)
+        $mail->Username = '';  // Your Gmail address
+        $mail->Password = '';  // Your Gmail App Password (use App Password if 2FA is enabled)
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;  // Enable TLS encryption
         $mail->Port = 587;  // Gmail's SMTP port
     
         // Step 4: Set email recipients
-        $mail->setFrom('stefanoszks@gmail.com', 'Stefanos Ziakas');  // Sender's email and name
+        $mail->setFrom('email', 'name');  // Sender's email and name
         $mail->addAddress($receiver, $username);  // Recipient's email and name
     
         // Step 5: Set email content
