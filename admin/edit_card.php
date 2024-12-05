@@ -11,9 +11,7 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
-$CVV              =  "";
-$PIN              =  "";
-$Expiration_Date  =  "";
+$PIN  =  "";
 
 $errorMessage   = "";
 $successMessage = "";
@@ -36,19 +34,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     $Card_Number = $row["Card_Number"];
-    $CVV = $row["CVV"];
     $PIN = $row["PIN"];
-    $Expiration_Date = $row["Expiration_Date"];
 
 } else {
     $Card_Number = isset($_POST["Card_Number"]) ? $_POST["Card_Number"] : '';
-    $CVV = isset($_POST["CVV"]) ? $_POST["CVV"] : '';
     $PIN = isset($_POST["PIN"]) ? $_POST["PIN"] : '';
-    $Expiration_Date = isset($_POST["Expiration_Date"]) ? $_POST["Expiration_Date"] : '';
 
     do {
-        if ( empty($Card_Number)    || empty($CVV)    || empty($PIN) ||
-             empty($Purchase_Limit) || empty($Status) || empty($Expiration_Date)
+        if ( empty($Card_Number) ||  empty($PIN)
         ) {
             $errorMessage = "All fields are required";
             break;
@@ -57,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $Original_Card_Number = isset($_POST["Original_Card_Number"]) ? $_POST["Original_Card_Number"] : '';
 
         $sql = "UPDATE Cards 
-                SET Card_Number='$Card_Number', CVV='$CVV', Pin='$PIN', Purchase_Limit='$Purchase_Limit', Status='$Status', Expiration_Date='$Expiration_Date' 
+                SET Card_Number='$Card_Number', Pin='$PIN' 
                 WHERE Card_Number='$Original_Card_Number'";
 
 
@@ -100,21 +93,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <form method="post">
             <input type="hidden" name="Original_Card_Number" value="<?= $Card_Number; ?>">
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">CVV</label>
-                <div class="col-sm-6">
-                    <input type="number" class="form-control" name="CVV" value="<?= $CVV; ?>" maxlength="3" required>
-                </div>
-            </div>
-            <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">PIN</label>
                 <div class="col-sm-6">
                     <input type="number" class="form-control" name="PIN" value="<?= $PIN; ?>" maxlength="4" required>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Expiration Date</label>
-                <div class="col-sm-6">
-                    <input type="date" class="form-control" name="Expiration_Date" value="<?= $Expiration_Date; ?>" required>
                 </div>
             </div>
 

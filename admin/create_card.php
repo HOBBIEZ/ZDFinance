@@ -14,7 +14,6 @@ if ($connection->connect_error) {
 $UserID = "";
 $IBAN = "";
 $PIN = "";
-$Expiration_Date = "";
 
 $errorMessage = "";
 $successMessage = "";
@@ -23,19 +22,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $UserID = $_POST["UserID"];
     $IBAN = $_POST["IBAN"];
     $PIN = $_POST["PIN"];
-    $Expiration_Date = $_POST["Expiration_Date"];
 
     do {
         if (
-            empty($UserID) || empty($Expiration_Date) ||
+            empty($UserID) ||
             empty($IBAN)   || empty($PIN) 
         ) {
             $errorMessage = "All fields are required";
             break;
         }
 
-        $sql = "INSERT INTO Cards (UserID, IBAN, PIN, Expiration_Date)
-                VALUES ('$UserID', '$IBAN', '$PIN', '$Expiration_Date')";
+        $sql = "INSERT INTO Cards (UserID, IBAN, PIN)
+                VALUES ('$UserID', '$IBAN', '$PIN')";
         $result = $connection->query($sql);
 
         if (!$result) {
@@ -46,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $UserID = "";
         $IBAN = "";
         $PIN = "";
-        $Expiration_Date = "";
 
         $successMessage = "Card added successfully!";
 
@@ -97,12 +94,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label class="col-sm-3 col-form-label">PIN</label>
                 <div class="col-sm-6">
                     <input type="number" class="form-control" name="PIN" value="<?= $PIN; ?>" maxlength="4" required>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Expiration Date</label>
-                <div class="col-sm-6">
-                    <input type="date" class="form-control" name="Expiration_Date" value="<?= $Expiration_Date; ?>" required>
                 </div>
             </div>
 
