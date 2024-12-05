@@ -2,8 +2,10 @@
 
 if ( isset($_GET["UserID"]) ) {
 
+    // deleting according to unique field - retrieve the data
     $UserID = $_GET["UserID"];
 
+    // connect with db
     $servername = "localhost";
     $username = "root";
     $password = "";
@@ -15,6 +17,7 @@ if ( isset($_GET["UserID"]) ) {
         die("Connection failed: " . $connection->connect_error);
     }
 
+    // for the specific logic -> delete = set status to 'deleted'
     $sql = "UPDATE Users SET Status='deleted' WHERE UserID='$UserID'";
     $connection->query($sql);
 }

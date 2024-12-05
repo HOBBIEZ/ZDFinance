@@ -65,6 +65,8 @@
             </thead>
             <tbody>
                 <?php
+
+                // connect with db
                 $servername = "localhost";
                 $username = "root";
                 $password = "";
@@ -76,6 +78,7 @@
                     die("Connection failed: " . $connection->connect_error);
                 }
 
+                // fetch all tables records
                 $sql = "SELECT * FROM Accounts";
                 $result = $connection->query($sql);
 
@@ -83,6 +86,7 @@
                     die("Invalid query: " . $connection->error);
                 }
 
+                // dynamically display all records of the table
                 while ($row = $result->fetch_assoc()) {
                     echo "
                     <tr>

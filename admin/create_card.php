@@ -1,5 +1,6 @@
 <?php
 
+// connect with db
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -11,14 +12,17 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
+// initialze necessary variables
 $UserID = "";
 $IBAN = "";
 $PIN = "";
 
+// error messages for UI and debugging purposes
 $errorMessage = "";
 $successMessage = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // retrieve necessary data
     $UserID = $_POST["UserID"];
     $IBAN = $_POST["IBAN"];
     $PIN = $_POST["PIN"];
@@ -32,10 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             break;
         }
 
+        // create -> new record
         $sql = "INSERT INTO Cards (UserID, IBAN, PIN)
                 VALUES ('$UserID', '$IBAN', '$PIN')";
         $result = $connection->query($sql);
 
+        // handle errors
         if (!$result) {
             $errorMessage = "Invalid query: " . $connection->error;
             break;

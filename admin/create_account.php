@@ -1,5 +1,6 @@
 <?php
 
+// connect with db
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -11,14 +12,17 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
+// initialize variables that are going to be used or this form
 $UserID = "";
 $account_name = "";
 $status = "";
 
+// messages for UI and debugging purposes
 $errorMessage = "";
 $successMessage = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // get the necessary info to make the connection between front and back end
     $UserID = $_POST["UserID"];
     $account_name = $_POST["Account_Name"];
     $status = $_POST["Status"];
@@ -29,10 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             break;
         }
 
+        // create an account -> new record in the table
         $sql = "INSERT INTO Accounts (UserID, Account_Name, Status)
                 VALUES ('$UserID', '$account_name', '$status')";
         $result = $connection->query($sql);
 
+        // handle errors
         if (!$result) {
             $errorMessage = "Invalid query: " . $connection->error;
             break;
@@ -63,7 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="container my-5">
         <h2>New Account</h2>
-
+        <br><br>
+        
         <?php
         if (!empty($errorMessage)) {
             echo "

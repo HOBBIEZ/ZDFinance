@@ -1,5 +1,6 @@
 <?php
 
+// connect with db
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -11,6 +12,7 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
+// initialize necessary variables
 $UserID = "";
 $username = "";
 $first_name = "";
@@ -43,6 +45,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
         exit;
     }
 
+    // load the existence data of the fields
     $username   =  $row["Username"];
     $first_name =  $row["First_Name"];
     $last_name  =  $row["Last_Name"];
@@ -55,6 +58,8 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
 
 } else {
 
+    
+    // apply new data from front end gui HTML to the values of the php variables
     $UserID     =  $_POST["UserID"];
     $username   =  $_POST["Username"];
     $first_name =  $_POST["First_Name"];

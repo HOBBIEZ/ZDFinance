@@ -1,4 +1,6 @@
 <?php
+
+// connect with db
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -10,6 +12,7 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
+// initialize necessary variables
 $account_name = "";
 $status = "";
 
@@ -36,10 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         exit;
     }
 
+    // load the existence data of the fields
     $account_name = $row["Account_Name"];
     $status = $row["Status"];
     $stmt->close();
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // apply new data from front end gui HTML to the values of the php variables
     $IBAN = isset($_POST["IBAN"]) ? $_POST["IBAN"] : '';
     $account_name = isset($_POST["Account_Name"]) ? $_POST["Account_Name"] : '';
     $status = isset($_POST["Status"]) ? $_POST["Status"] : '';

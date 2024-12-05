@@ -1,5 +1,6 @@
 <?php
 
+// connect with db
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -11,6 +12,7 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
+// initialize the necessary variables
 $username = "";
 $password = "";
 $first_name = "";
@@ -22,12 +24,14 @@ $phone_num = "";
 $address = "";
 $status = "";
 
+// error messages for UI and debugging purposes
 $errorMessage = "";
 $successMessage = "";
 
 if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+    // retrieve the necessary data
     $username    =  $_POST["Username"];
-    $password    =  password_hash($_POST["Password"], PASSWORD_BCRYPT);
+    $password    =  password_hash($_POST["Password"], PASSWORD_BCRYPT); // at password creation make sure to hash it first
     $first_name  =  $_POST["First_Name"];
     $last_name   =  $_POST["Last_Name"];
     $dob         =  $_POST["Date_of_Birth"];
@@ -48,6 +52,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
             break;
         }
 
+        // new client -> new record in table
         $sql = "INSERT INTO Users (Username, Password, First_Name, Last_Name, Date_of_Birth, Gender, Email, Phone_Number, Address, Status)
                 VALUES ('$username', '$password', '$first_name', '$last_name', '$dob', '$gender', '$email', '$phone_num', '$address', '$status')";
         $result = $connection->query($sql);

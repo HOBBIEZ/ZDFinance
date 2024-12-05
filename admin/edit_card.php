@@ -1,4 +1,6 @@
 <?php
+
+// connect with db
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -10,6 +12,7 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
+// initialize necessary variables
 $PIN = "";
 $Card_Number = "";
 
@@ -36,10 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         exit;
     }
 
+    // load the existence data of the fields
     $Card_Number = $row["Card_Number"];
     $PIN = $row["PIN"];
     $stmt->close();
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    // apply new data from front end gui HTML to the values of the php variables
     $Card_Number = isset($_POST["Original_Card_Number"]) ? $_POST["Original_Card_Number"] : '';
     $PIN = isset($_POST["PIN"]) ? $_POST["PIN"] : '';
 

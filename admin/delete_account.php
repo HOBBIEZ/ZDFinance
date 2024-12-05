@@ -2,8 +2,10 @@
 
 if ( isset($_GET["IBAN"]) ) {
 
+    // deleting according to unique field - retrieve the data
     $IBAN = $_GET["IBAN"];
 
+    // connect with db
     $servername = "localhost";
     $username = "root";
     $password = "";
@@ -15,6 +17,7 @@ if ( isset($_GET["IBAN"]) ) {
         die("Connection failed: " . $connection->connect_error);
     }
 
+    // for the specific logic -> delete = set status to 'inactive'
     $sql = "UPDATE Accounts SET Status='inactive' WHERE IBAN='$IBAN'";
     $connection->query($sql);
 }
