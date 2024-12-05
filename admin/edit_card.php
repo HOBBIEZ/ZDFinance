@@ -1,5 +1,4 @@
 <?php
-
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -11,21 +10,25 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
-$PIN  =  "";
+$PIN = "";
+$Card_Number = "";
 
-$errorMessage   = "";
+$errorMessage = "";
 $successMessage = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (!isset($_GET["Card_Number"])) {
-        header("location: /ZDFinance/admin/edit_card.php");
+        header("location: /ZDFinance/admin/read_cards.php");
         exit;
     }
 
     $Card_Number = $_GET["Card_Number"];
 
-    $sql = "SELECT * FROM Cards WHERE Card_Number='$Card_Number'";
-    $result = $connection->query($sql);
+    // Use a prepared statement for security
+    $stmt = $connection->prepare("SELECT * FROM Cards WHERE Card_Number = ?");
+    $stmt->bind_param("s", $Card_Number);
+    $stmt->execute();
+    $result = $stmt->get_result();
     $row = $result->fetch_assoc();
 
     if (!$row) {
@@ -35,33 +38,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $Card_Number = $row["Card_Number"];
     $PIN = $row["PIN"];
-
-} else {
-    $Card_Number = isset($_POST["Card_Number"]) ? $_POST["Card_Number"] : '';
+    $stmt->close();
+} else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $Card_Number = isset($_POST["Original_Card_Number"]) ? $_POST["Original_Card_Number"] : '';
     $PIN = isset($_POST["PIN"]) ? $_POST["PIN"] : '';
 
     do {
-        if ( empty($Card_Number) ||  empty($PIN)
-        ) {
-            $errorMessage = "All fields are required";
+        if (empty($Card_Number) || empty($PIN)) {
+            $errorMessage = "All fields are required.";
             break;
         }
 
-        $Original_Card_Number = isset($_POST["Original_Card_Number"]) ? $_POST["Original_Card_Number"] : '';
+        // Use a prepared statement for updating
+        $stmt = $connection->prepare("UPDATE Cards SET PIN = ? WHERE Card_Number = ?");
+        $stmt->bind_param("ss", $PIN, $Card_Number);
 
-        $sql = "UPDATE Cards 
-                SET Card_Number='$Card_Number', Pin='$PIN' 
-                WHERE Card_Number='$Original_Card_Number'";
-
-
-        $result = $connection->query($sql);
-
-        if (!$result) {
-            $errorMessage = "Invalid query: " . $connection->error;
+        if (!$stmt->execute()) {
+            $errorMessage = "Invalid query: " . $stmt->error;
             break;
         }
 
         $successMessage = "Card updated successfully!";
+        $stmt->close();
+
         header("location: /ZDFinance/admin/read_cards.php");
         exit;
     } while (false);
@@ -74,9 +73,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Client</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <title>Edit Card</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <div class="container my-5">
@@ -85,23 +84,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         <?php if (!empty($errorMessage)) : ?>
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong><?= $errorMessage; ?></strong>
+                <strong><?= htmlspecialchars($errorMessage); ?></strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
 
         <form method="post">
-            <input type="hidden" name="Original_Card_Number" value="<?= $Card_Number; ?>">
+            <input type="hidden" name="Original_Card_Number" value="<?= htmlspecialchars($Card_Number); ?>">
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">PIN</label>
                 <div class="col-sm-6">
-                    <input type="number" class="form-control" name="PIN" value="<?= $PIN; ?>" maxlength="4" required>
+                    <input type="number" class="form-control" name="PIN" value="<?= htmlspecialchars($PIN); ?>" maxlength="4" required>
                 </div>
             </div>
 
             <?php if (!empty($successMessage)) : ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong><?= $successMessage; ?></strong>
+                    <strong><?= htmlspecialchars($successMessage); ?></strong>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php endif; ?>
