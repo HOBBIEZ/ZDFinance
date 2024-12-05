@@ -25,15 +25,45 @@ The database consists of the following tables:
 * __Internal Transactions__: Any transaction associated with money transfering between accounts.
 * __Audit Log__: A special table to keep track of any actions are being made by anyone in the app. Special previleges are required to have access to the data of this table.
 
-Obviously the tables do not have simple fields with no constrains, a lot of fields are associated between each other and checking for correct data form is being made not only in front end, but also backend and in the actual database for increased security
+Obviously the tables do not have simple fields with no constrains, a lot of fields are associated between each other and checking for correct data form is being made not only in front end, but also backend and in the actual database for increased security.
 
 Apart from the tables, the most functionalities take place in the database. The DB consists of triggers for many purposes such as checking limits of age, correct form of input etc but also many triggers to insert new records to the audit log table fast and securely after each action takes place. Finally, there also exist some procedures to help with insertion in audit log table with action such as login and logout that do not modify somehow another table in order to use a trigger.
 
 The following images show visually the database architecture in the form of an ERD and a relational diagram:
 
-![DB_ERD](./presentation_images/ERD)
+![DB_ERD](./presentation_images/ERD.png)
 
-![DB_RD](./presentation_images/RD)
+- **Entities**: Represented by blue rectangles.  
+- **Attributes**: Represented by green ellipses.  
+- **Relationships**: Represented by orange diamonds.  
+
+- All **Users** share the same attributes, some of which are composite.  
+- A **User** can have multiple **Accounts** in a **1:N partial-to-total relationship**, as opening an account is optional.  
+- The same relationship applies between **Accounts** and **Cards**, as well as between **Users** and **Transactions** (internal and external).  
+- A **1:N total-to-total relationship** exists between **Users** and **Audit logs**.
+
+![DB_RD](./presentation_images/RD.png)
+
+- **Tables**: Represented by groups of rectangles.  
+- **Primary Keys**: Represented by underlined data within a table.  
+- **Foreign Keys**: Represented by arrows pointing from one piece of data to another.  
+
+### Normalization and Database Design  
+After creating the relational schema, normalization is required to ensure efficient database functionality. Normalization applies design rules to prevent **data redundancy** and **update anomalies** before implementation.  
+
+#### Third Normal Form (3NF)  
+3NF is a normalization level following 1NF and 2NF. The conditions for 3NF are:  
+1. **1NF**:  
+   - No duplicate records.  
+   - No multivalued data in a single cell.  
+   - No data that can be further decomposed into smaller cells.  
+2. **2NF**:  
+   - Must already be in 1NF.  
+   - No partial dependencies (dependencies on part of a composite primary key).  
+3. **No Transitive Dependencies**:  
+   - All fields must depend only on the primary key.  
+
+
 
 ## The Codebase
 
@@ -45,19 +75,19 @@ As in any other e-banking webapp, the central webpage of the user is info about 
 
 An example image of the central users page is being displayed below after login action:
 
-![user_central_page_loged_in](./presentation_images/user_loged_in)
+![user_central_page_loged_in](./presentation_images/user_loged_in.png)
 
 ### Admin Webpage
 
-The admin is the special app user that has privilages to see everything in the database. CEOs, CFOs etc positions in the company have admin previlages. The admin, when accesses his webpage, firstly sees some charts with statitics about the database to help him have a quick overview of how things go with the users in the database. The admin also has a sidebar with buttons to have access to the data of all tables of the database. This special user, ashe is  the admin, has the power to make some logical changes. He can change information about users, accounts, cards, create new ones, or even delete them if a user does not follow the companys guidelines. But there are thing that, even the admin, cannot do. Examples of such actions is the modification or deletion of transactions. The admin may see all transactions made in the databse or the audit log but it is illigal for him to do such actions as there could be a lot of law mix ups.
+The admin is the special app user that has privilages to see everything in the database. CEOs, CFOs etc positions in the company have admin previlages. The admin, when accesses his webpage, firstly sees some charts with statitics about the database to help him have a quick overview of how things go with the users in the database. The admin also has a sidebar with buttons to have access to the data of all tables of the database. This special user, ashe is  the admin, has the power to make some logical changes. He can change information about users, accounts, cards, create new ones, or even delete them if a user does not follow the companys guidelines. But there are things that, even the admin, cannot do. Examples of such actions is the modification or deletion of transactions. The admin may see all transactions made in the databse or the audit log but it is illigal for him to do such actions as there could be a lot of law mix ups.
 
 A functionality implemented about the deletion of users and account is just them being "displayed" (status "deleted"/"inactive"). The user cannot anymore access his personal app account or cannot see his own accounts in the app as the status of them is "deleted"/"inactive". This due to reason that it is important for the company to keep such information, even if the user is not being accessed for future modification if active again.
 
 An example set image of the admins page with some actions is being displayed below:
 
-![admin_central_page](./presentation_images/admin_central_page)
-![admin_view_accounts](./presentation_images/admin_view_accounts)
-![admin_edit_card](./presentation_images/admin_edit_card)
+![admin_central_page](./presentation_images/admin_central_page.png)
+![admin_view_accounts](./presentation_images/admin_view_accounts.png)
+![admin_edit_card](./presentation_images/admin_edit_card.png)
 
 ## Programming Implementaion
 
@@ -103,7 +133,7 @@ note how `https` is not crucial for the admin.
 
 The host may access anything also by using `localhost/` instead of `<IP>/`.
 
-After accessing one of these two webpages user does need to manually type any other address. All other pages are being dynamiclly and automatically being routed via the GUI.
+After accessing one of these two webpages user doesn't need to manually type any other address. All other pages are being dynamiclly and automatically being routed via the GUI.
 
 ## Sources
 
