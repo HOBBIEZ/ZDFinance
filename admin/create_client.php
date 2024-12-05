@@ -48,8 +48,8 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
             break;
         }
 
-        $sql = "INSERT INTO Users (Username, Password,  First_Name, Last_Name, Date_of_Birth, Gender, Email, Phone_Number, Address, Status)
-                VALUES ('$username', R'$first_name', '$last_name', '$dob', '$gender', '$email', '$phone_num', '$address', '$status')";
+        $sql = "INSERT INTO Users (Username, Password, First_Name, Last_Name, Date_of_Birth, Gender, Email, Phone_Number, Address, Status)
+                VALUES ('$username', '$password', '$first_name', '$last_name', '$dob', '$gender', '$email', '$phone_num', '$address', '$status')";
         $result = $connection->query($sql);
 
         if (!$result) {
