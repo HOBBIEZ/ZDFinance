@@ -11,11 +11,8 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
-$Card_Number      =  "";
 $CVV              =  "";
 $PIN              =  "";
-$Purchase_Limit   =  "";
-$Status           =  "";
 $Expiration_Date  =  "";
 
 $errorMessage   = "";
@@ -41,20 +38,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $Card_Number = $row["Card_Number"];
     $CVV = $row["CVV"];
     $PIN = $row["PIN"];
-    $Purchase_Limit = $row["Purchase_Limit"];
-    $Status = $row["Status"];
     $Expiration_Date = $row["Expiration_Date"];
 
 } else {
     $Card_Number = isset($_POST["Card_Number"]) ? $_POST["Card_Number"] : '';
     $CVV = isset($_POST["CVV"]) ? $_POST["CVV"] : '';
     $PIN = isset($_POST["PIN"]) ? $_POST["PIN"] : '';
-    $Purchase_Limit = isset($_POST["Purchase_Limit"]) ? $_POST["Purchase_Limit"] : '';
-    $Status = isset($_POST["Status"]) ? $_POST["Status"] : '';
     $Expiration_Date = isset($_POST["Expiration_Date"]) ? $_POST["Expiration_Date"] : '';
 
     do {
-        if ( empty($Card_Number) || empty($CVV) || empty($PIN) ||
+        if ( empty($Card_Number)    || empty($CVV)    || empty($PIN) ||
              empty($Purchase_Limit) || empty($Status) || empty($Expiration_Date)
         ) {
             $errorMessage = "All fields are required";
@@ -107,12 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <form method="post">
             <input type="hidden" name="Original_Card_Number" value="<?= $Card_Number; ?>">
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Card Number</label>
-                <div class="col-sm-6">
-                    <input type="number" class="form-control" name="Card_Number" value="<?= $Card_Number; ?>" maxlength="16" required>
-                </div>
-            </div>
-            <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">CVV</label>
                 <div class="col-sm-6">
                     <input type="number" class="form-control" name="CVV" value="<?= $CVV; ?>" maxlength="3" required>
@@ -125,25 +112,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Purchase Limit</label>
-                <div class="col-sm-6">
-                    <input type="number" class="form-control" name="Purchase_Limit" value="<?= $Purchase_Limit; ?>" min="0" required>
-                </div>
-            </div>
-            <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Expiration Date</label>
                 <div class="col-sm-6">
                     <input type="date" class="form-control" name="Expiration_Date" value="<?= $Expiration_Date; ?>" required>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Status</label>
-                <div class="col-sm-6">
-                    <select class="form-control" name="Status" required>
-                        <option value="">Select Status</option>
-                        <option value="active" <?php echo $Status == 'active' ? 'selected' : ''; ?>>Active</option>
-                        <option value="inactive" <?php echo $Status == 'inactive' ? 'selected' : ''; ?>>Inactive</option>
-                    </select>
                 </div>
             </div>
 

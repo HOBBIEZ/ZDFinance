@@ -12,12 +12,9 @@ if ($connection->connect_error) {
 }
 
 $UserID = "";
-$Card_Number = "";
 $CVV = "";
 $IBAN = "";
 $PIN = "";
-$Purchase_Limit = "";
-$Status = "";
 $Expiration_Date = "";
 
 $errorMessage = "";
@@ -25,26 +22,22 @@ $successMessage = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $UserID = $_POST["UserID"];
-    $Card_Number = $_POST["Card_Number"];
     $CVV = $_POST["CVV"];
     $IBAN = $_POST["IBAN"];
     $PIN = $_POST["PIN"];
-    $Purchase_Limit = $_POST["Purchase_Limit"];
-    $Status = $_POST["Status"];
     $Expiration_Date = $_POST["Expiration_Date"];
 
     do {
         if (
-            empty($UserID) || empty($Card_Number) || empty($CVV) ||
-            empty($IBAN) || empty($PIN) || empty($Purchase_Limit) ||
-            empty($Status) || empty($Expiration_Date)
+            empty($UserID) || empty($CVV) || empty($Expiration_Date) ||
+            empty($IBAN)   || empty($PIN) 
         ) {
             $errorMessage = "All fields are required";
             break;
         }
 
-        $sql = "INSERT INTO Cards (UserID, Card_Number, CVV, IBAN, PIN, Purchase_Limit, Status, Expiration_Date)
-                VALUES ('$UserID', '$Card_Number', '$CVV', '$IBAN', '$PIN', '$Purchase_Limit', '$Status', '$Expiration_Date')";
+        $sql = "INSERT INTO Cards (UserID, CVV, IBAN, PIN, Expiration_Date)
+                VALUES ('$UserID', '$CVV', '$IBAN', '$PIN' '$Expiration_Date')";
         $result = $connection->query($sql);
 
         if (!$result) {
@@ -53,12 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $UserID = "";
-        $Card_Number = "";
         $CVV = "";
         $IBAN = "";
         $PIN = "";
-        $Purchase_Limit = "";
-        $Status = "";
         $Expiration_Date = "";
 
         $successMessage = "Card added successfully!";
@@ -101,12 +91,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Card Number</label>
-                <div class="col-sm-6">
-                    <input type="number" class="form-control" name="Card_Number" value="<?= $Card_Number; ?>" maxlength="16" required>
-                </div>
-            </div>
-            <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">CVV</label>
                 <div class="col-sm-6">
                     <input type="number" class="form-control" name="CVV" value="<?= $CVV; ?>" maxlength="3" required>
@@ -125,25 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Purchase Limit</label>
-                <div class="col-sm-6">
-                    <input type="number" class="form-control" name="Purchase_Limit" value="<?= $Purchase_Limit; ?>" min="0" required>
-                </div>
-            </div>
-            <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Expiration Date</label>
                 <div class="col-sm-6">
                     <input type="date" class="form-control" name="Expiration_Date" value="<?= $Expiration_Date; ?>" required>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Status</label>
-                <div class="col-sm-6">
-                    <select class="form-control" name="Status" required>
-                        <option value="">Select Status</option>
-                        <option value="active" <?php echo $Status == 'active' ? 'selected' : ''; ?>>active</option>
-                        <option value="inactive" <?php echo $Status == 'inactive' ? 'selected' : ''; ?>>inactive</option>
-                    </select>
                 </div>
             </div>
 

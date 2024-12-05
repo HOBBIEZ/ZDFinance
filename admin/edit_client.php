@@ -13,7 +13,6 @@ if ($connection->connect_error) {
 
 $UserID = "";
 $username = "";
-$password = "";
 $first_name = "";
 $last_name = "";
 $dob = "";
@@ -45,7 +44,6 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
     }
 
     $username   =  $row["Username"];
-    $password   =  $row["Password"];
     $first_name =  $row["First_Name"];
     $last_name  =  $row["Last_Name"];
     $dob        =  $row["Date_of_Birth"];
@@ -59,7 +57,6 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
 
     $UserID     =  $_POST["UserID"];
     $username   =  $_POST["Username"];
-    $password   =  $_POST["Password"];
     $first_name =  $_POST["First_Name"];
     $last_name  =  $_POST["Last_Name"];
     $dob        =  $_POST["Date_of_Birth"];
@@ -71,10 +68,10 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
 
     do {
 
-        if ( empty($username)  || empty($password)  || empty($first_name) ||
-             empty($last_name) || empty($dob)       || empty($gender)     ||
-             empty($email)     || empty($phone_num) || empty($address)    ||
-             empty($UserID)    || empty($UserID)
+        if ( empty($username)   ||  empty($first_name)  ||  empty($last_name)  || 
+             empty($dob)        ||  empty($gender)      ||  empty($email)      || 
+             empty($phone_num)  ||  empty($address)     ||  empty($UserID)     || 
+             empty($UserID)
         ) {
             $errorMessage = "all fields are required";
             break;
@@ -132,12 +129,6 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Password</label>
-                <div class="col-sm-6">
-                    <input type="password" class="form-control" name="Password" value="<?php echo $password; ?>" required>
-                </div>
-            </div>
-            <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">First Name</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control" name="First_Name" value="<?php echo $first_name; ?>" required>
@@ -180,7 +171,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Address</label>
                 <div class="col-sm-6">
-                    <textarea class="form-control" name="Address" required><?php echo $address; ?></textarea>
+                    <input type="text" class="form-control" name="Address" value="<?php echo $address; ?>" required>
                 </div>
             </div>
             <div class="row mb-3">

@@ -50,6 +50,7 @@
     <div class="container my-5">
         <h2>
             List of Internal Transactions
+            <br><br>
         </h2>
         <br>
         <table class="table">
@@ -57,11 +58,10 @@
                 <tr>
                     <th>TransactionID</th>
                     <th>UserID</th>
+                    <th>IBAN</th>
                     <th>Type</th>
-                    <th>External Account</th>
                     <th>Amount</th>
                     <th>Timestamp</th>
-                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -89,11 +89,10 @@
                     <tr>
                         <td>$row[TransactionID]</td>
                         <td>$row[UserID]</td>
+                        <td>$row[IBAN]</td>
                         <td>$row[Type]</td>
-                        <td>$row[External_Account_Address]</td>
                         <td>$row[Amount]</td>
                         <td>$row[Timestamp]</td>
-                        <td>$row[Status]</td>
                     </tr>
                     ";
                 }

@@ -56,8 +56,8 @@
             <thead>
                 <tr>
                     <th>UserID</th>
+                    <th>Account Name</th>
                     <th>IBAN</th>
-                    <th>Transfer Limit</th>
                     <th>Balance</th>
                     <th>Creation Date</th>
                     <th>Status</th>
@@ -87,8 +87,8 @@
                     echo "
                     <tr>
                         <td>$row[UserID]</td>
+                        <td>$row[Account_Name]</td>
                         <td>$row[IBAN]</td>
-                        <td>$row[Transfer_Limit]</td>
                         <td>$row[Balance]</td>
                         <td>$row[Creation_Date]</td>
                         <td>$row[Status]</td>

@@ -12,7 +12,7 @@ if ($connection->connect_error) {
 }
 
 $UserID = "";
-$tranfer_limit = "";
+$account_name = "";
 $status = "";
 
 $errorMessage = "";
@@ -20,17 +20,17 @@ $successMessage = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $UserID = $_POST["UserID"];
-    $tranfer_limit = $_POST["Transfer_Limit"];
+    $account_name = $_POST["Account_Name"];
     $status = $_POST["Status"];
 
     do {
-        if (empty($UserID) || empty($tranfer_limit) || empty($status)) {
+        if (empty($UserID) || empty($account_name) || empty($status)) {
             $errorMessage = "All fields are required";
             break;
         }
 
-        $sql = "INSERT INTO Accounts (UserID, Transfer_Limit, Status)
-                VALUES ('$UserID', '$tranfer_limit', '$status')";
+        $sql = "INSERT INTO Accounts (UserID, Account_Name, Status)
+                VALUES ('$UserID', '$account_name', '$status')";
         $result = $connection->query($sql);
 
         if (!$result) {
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $UserID = "";
-        $tranfer_limit = "";
+        $account_name = "";
         $status = "";
 
         $successMessage = "Account added successfully!";
@@ -79,13 +79,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">UserID</label>
                 <div class="col-sm-6">
-                    <input type="number" class="form-control" name="UserID" value="<?php echo $UserID; ?>">
+                    <input type="number" class="form-control" name="UserID" value="<?php echo $UserID; ?>" required>
                 </div>
             </div>
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Transfer Limit</label>
+                <label class="col-sm-3 col-form-label">Account Name</label>
                 <div class="col-sm-6">
-                    <input type="number" class="form-control" name="Transfer_Limit" value="<?php echo $tranfer_limit; ?>" min="0">
+                    <input type="text" class="form-control" name="Account_Name" value="<?php echo $account_name; ?>" required>
                 </div>
             </div>
             <div class="row mb-3">

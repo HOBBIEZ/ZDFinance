@@ -2,7 +2,6 @@
 
 $servername = "localhost";
 $username = "root";
-$password = "";
 $database = "pos_db";
 
 $connection = new mysqli($servername, $username, $password, $database);
@@ -12,7 +11,6 @@ if ($connection->connect_error) {
 }
 
 $username = "";
-$password = "";
 $first_name = "";
 $last_name = "";
 $dob = "";
@@ -38,17 +36,17 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
     $status      =  $_POST["Status"];
 
     do {
-        if ( empty($username)  || empty($password)  || empty($first_name) ||
-             empty($last_name) || empty($dob)       || empty($gender)     ||
-             empty($email)     || empty($phone_num) || empty($address)    ||
-             empty($status)
+        if ( empty($username)  || empty($first_name) || empty($status)   ||
+             empty($last_name) || empty($dob)        || empty($gender)   ||
+             empty($email)     || empty($phone_num)  || empty($address) 
+             
         ) {
             $errorMessage = "all fields are required";
             break;
         }
 
-        $sql = "INSERT INTO Users (Username, Password, First_Name, Last_Name, Date_of_Birth, Gender, Email, Phone_Number, Address, Status)
-                VALUES ('$username', '$password', '$first_name', '$last_name', '$dob', '$gender', '$email', '$phone_num', '$address', '$status')";
+        $sql = "INSERT INTO Users (Username, First_Name, Last_Name, Date_of_Birth, Gender, Email, Phone_Number, Address, Status)
+                VALUES ('$username', '$first_name', '$last_name', '$dob', '$gender', '$email', '$phone_num', '$address', '$status')";
         $result = $connection->query($sql);
 
         if (!$result) {
@@ -56,7 +54,6 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
         }
 
         $username = "";
-        $password = "";
         $first_name = "";
         $last_name = "";
         $dob = "";
@@ -87,6 +84,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 <body>
     <div class="container my-5">
         <h2>New Client</h2>
+        <br><br>
 
         <?php
         if (!empty($errorMessage)) {
@@ -104,12 +102,6 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
                 <label class="col-sm-3 col-form-label">Username</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control" name="Username" value="<?php echo $username; ?>" required>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Password</label>
-                <div class="col-sm-6">
-                    <input type="password" class="form-control" name="Password" value="<?php echo $password; ?>" required>
                 </div>
             </div>
             <div class="row mb-3">

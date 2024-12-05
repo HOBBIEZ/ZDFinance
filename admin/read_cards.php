@@ -49,6 +49,7 @@
     <div class="container my-5">
         <h2>
             List of Cards
+            <br><br>
             <a class="btn btn-primary" href="/ZDFinance/admin/create_card.php" role="button">New Card</a>
         </h2>
         <br>
@@ -60,8 +61,7 @@
                     <th>CVV</th>
                     <th>IBAN</th>
                     <th>PIN</th>
-                    <th>Purchase Limit</th>
-                    <th>Status</th>
+                    <th>Creation Date</th>
                     <th>Expiration Date</th>
                 </tr>
             </thead>
@@ -93,8 +93,7 @@
                         <td>$row[CVV]</td>
                         <td>$row[IBAN]</td>
                         <td>$row[PIN]</td>
-                        <td>$row[Purchase_Limit]</td>
-                        <td>$row[Status]</td>
+                        <td>$row[Creation_Date]</td>
                         <td>$row[Expiration_Date]</td>
                         <td>
                             <a class='btn btn-primary btn-sm' href='/ZDFinance/admin/edit_card.php?Card_Number=$row[Card_Number]'>Edit</a>

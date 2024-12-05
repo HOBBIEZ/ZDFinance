@@ -55,9 +55,8 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>UserID</th>
                     <th>Username</th>
-                    <th>Password</th>
                     <th>Creation Date</th>
                     <th>First Name</th>
                     <th>Last Name</th>
@@ -95,7 +94,6 @@
                     <tr>
                         <td>$row[UserID]</td>
                         <td>$row[Username]</td>
-                        <td>$row[Password]</td>
                         <td>$row[Creation_Date]</td>
                         <td>$row[First_Name]</td>
                         <td>$row[Last_Name]</td>

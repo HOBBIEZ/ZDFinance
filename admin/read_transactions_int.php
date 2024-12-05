@@ -50,6 +50,7 @@
     <div class="container my-5">
         <h2>
             List of Internal Transactions
+            <br><br>
         </h2>
         <br>
         <table class="table">
@@ -62,7 +63,6 @@
                     <th>Description</th>
                     <th>Amount</th>
                     <th>Timestamp</th>
-                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -95,7 +95,6 @@
                         <td>$row[Description]</td>
                         <td>$row[Amount]</td>
                         <td>$row[Timestamp]</td>
-                        <td>$row[Status]</td>
                     </tr>
                     ";
                 }

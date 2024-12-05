@@ -11,7 +11,7 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
-$transfer_limit  =  "";
+$account_name  =  "";
 $status = "";
 
 $errorMessage   = "";
@@ -34,21 +34,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         exit;
     }
 
-    $transfer_limit = $row["Transfer_Limit"];
+    $account_name = $row["Account_Name"];
     $status = $row["Status"];
 } else {
     $IBAN = isset($_POST["IBAN"]) ? $_POST["IBAN"] : '';
-    $transfer_limit = isset($_POST["Transfer_Limit"]) ? $_POST["Transfer_Limit"] : '';
+    $account_name = isset($_POST["Account_name"]) ? $_POST["Account_Name"] : '';
     $status = isset($_POST["Status"]) ? $_POST["Status"] : '';
 
     do {
-        if (empty($transfer_limit) || empty($status) || empty($IBAN)) {
+        if (empty($account_name) || empty($status) || empty($IBAN)) {
             $errorMessage = "All fields are required";
             break;
         }
 
         $sql = "UPDATE Accounts " .
-               "SET Transfer_Limit='$transfer_limit', Status='$status'" .
+               "SET Account_Name='$account_name', Status='$status'" .
                "WHERE IBAN=$IBAN";
 
         $result = $connection->query($sql);
@@ -78,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 <body>
     <div class="container my-5">
         <h2>Edit Account</h2>
+        <br><br>
 
         <?php
         if ( !empty($errorMessage) ) {
@@ -93,9 +94,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <form method="post">
             <input type="hidden" name="IBAN" value="<?php echo $IBAN; ?>">
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Transfer Limit</label>
+                <label class="col-sm-3 col-form-label">Account Name</label>
                 <div class="col-sm-6">
-                    <input type="number" class="form-control" name="Transfer_Limit" value="<?php echo $tranfer_limit; ?>" min="0">
+                    <input type="text" class="form-control" name="Account_Name" value="<?php echo $tranfer_limit; ?>" required>
                 </div>
             </div>
             <div class="row mb-3">
